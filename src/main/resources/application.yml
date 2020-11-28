@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+
+spring:
+  datasource:
+    name: hospital
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:  jdbc:mysql://127.0.0.1:3306/hospital?serverTimezone=GMT
+    username: root
+    password: TF22661.me
+    # consistent
+mybatis:
+  mapper-locations: classpath*:com/example/hospital/mapper/*.xml
+  type-aliases-package: com.example.hospital.dao
+  configuration:
+    map-underscore-to-camel-case: true
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        debug
+

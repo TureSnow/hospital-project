@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hospital.dao.NaSheetMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.NaSheet" >
+    <id column="patient_id" property="patientId" jdbcType="INTEGER" />
+    <id column="date" property="date" jdbcType="DATE" />
+    <result column="NA_result" property="naResult" jdbcType="CHAR" />
+    <result column="illness_level" property="illnessLevel" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    patient_id, date, NA_result, illness_level
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.hospital.model.NaSheetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from na_sheet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from na_sheet
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from na_sheet
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.hospital.model.NaSheetExample" >
+    delete from na_sheet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.NaSheet" >
+    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into na_sheet (date, NA_result, illness_level
+      )
+    values (#{date,jdbcType=DATE}, #{naResult,jdbcType=CHAR}, #{illnessLevel,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.NaSheet" >
+    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into na_sheet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="naResult != null" >
+        NA_result,
+      </if>
+      <if test="illnessLevel != null" >
+        illness_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="naResult != null" >
+        #{naResult,jdbcType=CHAR},
+      </if>
+      <if test="illnessLevel != null" >
+        #{illnessLevel,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.hospital.model.NaSheetExample" resultType="java.lang.Integer" >
+    select count(*) from na_sheet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update na_sheet
+    <set >
+      <if test="record.patientId != null" >
+        patient_id = #{record.patientId,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.naResult != null" >
+        NA_result = #{record.naResult,jdbcType=CHAR},
+      </if>
+      <if test="record.illnessLevel != null" >
+        illness_level = #{record.illnessLevel,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update na_sheet
+    set patient_id = #{record.patientId,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      NA_result = #{record.naResult,jdbcType=CHAR},
+      illness_level = #{record.illnessLevel,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.NaSheet" >
+    update na_sheet
+    <set >
+      <if test="naResult != null" >
+        NA_result = #{naResult,jdbcType=CHAR},
+      </if>
+      <if test="illnessLevel != null" >
+        illness_level = #{illnessLevel,jdbcType=CHAR},
+      </if>
+    </set>
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.NaSheet" >
+    update na_sheet
+    set NA_result = #{naResult,jdbcType=CHAR},
+      illness_level = #{illnessLevel,jdbcType=CHAR}
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </update>
+</mapper>
