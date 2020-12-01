@@ -5,8 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="CHAR" />
     <result column="area" property="area" jdbcType="CHAR" />
   </resultMap>
@@ -69,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, password, gender, age, role, area
+    id, name, password, role, area
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.hospital.model.UserExample" >
     select
@@ -105,10 +103,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (name, password, gender, 
-      age, role, area)
-    values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
-      #{age,jdbcType=INTEGER}, #{role,jdbcType=CHAR}, #{area,jdbcType=CHAR})
+    insert into user (name, password, role, 
+      area)
+    values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=CHAR}, 
+      #{area,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,12 +119,6 @@
       </if>
       <if test="password != null" >
         password,
-      </if>
-      <if test="gender != null" >
-        gender,
-      </if>
-      <if test="age != null" >
-        age,
       </if>
       <if test="role != null" >
         role,
@@ -141,12 +133,6 @@
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null" >
-        #{gender,jdbcType=CHAR},
-      </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
       </if>
       <if test="role != null" >
         #{role,jdbcType=CHAR},
@@ -174,12 +160,6 @@
       <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
-      <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=CHAR},
-      </if>
-      <if test="record.age != null" >
-        age = #{record.age,jdbcType=INTEGER},
-      </if>
       <if test="record.role != null" >
         role = #{record.role,jdbcType=CHAR},
       </if>
@@ -196,8 +176,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=CHAR},
-      age = #{record.age,jdbcType=INTEGER},
       role = #{record.role,jdbcType=CHAR},
       area = #{record.area,jdbcType=CHAR}
     <if test="_parameter != null" >
@@ -213,12 +191,6 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="gender != null" >
-        gender = #{gender,jdbcType=CHAR},
-      </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
-      </if>
       <if test="role != null" >
         role = #{role,jdbcType=CHAR},
       </if>
@@ -232,8 +204,6 @@
     update user
     set name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
-      age = #{age,jdbcType=INTEGER},
       role = #{role,jdbcType=CHAR},
       area = #{area,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}

@@ -7,12 +7,6 @@ public class Patient implements Serializable {
 
     private String name;
 
-    private Integer age;
-
-    private String phone;
-
-    private String gender;
-
     private String lifeState;
 
     private String areaLevel;
@@ -35,30 +29,6 @@ public class Patient implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getLifeState() {
@@ -99,9 +69,6 @@ public class Patient implements Serializable {
         Patient other = (Patient) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getAge() == null ? other.getAge() == null : this.getAge().equals(other.getAge()))
-            && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getGender() == null ? other.getGender() == null : this.getGender().equals(other.getGender()))
             && (this.getLifeState() == null ? other.getLifeState() == null : this.getLifeState().equals(other.getLifeState()))
             && (this.getAreaLevel() == null ? other.getAreaLevel() == null : this.getAreaLevel().equals(other.getAreaLevel()))
             && (this.getIllnessLevel() == null ? other.getIllnessLevel() == null : this.getIllnessLevel().equals(other.getIllnessLevel()));
@@ -113,9 +80,6 @@ public class Patient implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getAge() == null) ? 0 : getAge().hashCode());
-        result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
-        result = prime * result + ((getGender() == null) ? 0 : getGender().hashCode());
         result = prime * result + ((getLifeState() == null) ? 0 : getLifeState().hashCode());
         result = prime * result + ((getAreaLevel() == null) ? 0 : getAreaLevel().hashCode());
         result = prime * result + ((getIllnessLevel() == null) ? 0 : getIllnessLevel().hashCode());
@@ -130,9 +94,6 @@ public class Patient implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", age=").append(age);
-        sb.append(", phone=").append(phone);
-        sb.append(", gender=").append(gender);
         sb.append(", lifeState=").append(lifeState);
         sb.append(", areaLevel=").append(areaLevel);
         sb.append(", illnessLevel=").append(illnessLevel);

@@ -9,10 +9,6 @@ public class User implements Serializable {
 
     private String password;
 
-    private String gender;
-
-    private Integer age;
-
     private String role;
 
     private String area;
@@ -41,22 +37,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public String getRole() {
@@ -90,8 +70,6 @@ public class User implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getGender() == null ? other.getGender() == null : this.getGender().equals(other.getGender()))
-            && (this.getAge() == null ? other.getAge() == null : this.getAge().equals(other.getAge()))
             && (this.getRole() == null ? other.getRole() == null : this.getRole().equals(other.getRole()))
             && (this.getArea() == null ? other.getArea() == null : this.getArea().equals(other.getArea()));
     }
@@ -103,8 +81,6 @@ public class User implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getGender() == null) ? 0 : getGender().hashCode());
-        result = prime * result + ((getAge() == null) ? 0 : getAge().hashCode());
         result = prime * result + ((getRole() == null) ? 0 : getRole().hashCode());
         result = prime * result + ((getArea() == null) ? 0 : getArea().hashCode());
         return result;
@@ -119,8 +95,6 @@ public class User implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", password=").append(password);
-        sb.append(", gender=").append(gender);
-        sb.append(", age=").append(age);
         sb.append(", role=").append(role);
         sb.append(", area=").append(area);
         sb.append(", serialVersionUID=").append(serialVersionUID);

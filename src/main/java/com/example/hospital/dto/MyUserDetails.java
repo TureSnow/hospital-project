@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
  */
 public class MyUserDetails implements UserDetails {
     private User user;
-    private List<String> permissionList;
-    public MyUserDetails(User user, List<String> permissionList) {
+    private List<GrantedAuthority> permissionList;
+    public MyUserDetails(User user, List<GrantedAuthority> permissionList) {
         this.user = user;
         this.permissionList = permissionList;
     }
@@ -28,10 +28,7 @@ public class MyUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户的权限
-        return permissionList.stream()
-                .filter(Objects::nonNull)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return permissionList;
     }
 
     public int getId(){

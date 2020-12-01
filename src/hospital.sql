@@ -3,12 +3,9 @@ create table user(
 id int(10) not null auto_increment,
 name varchar(20) not null,
 password varchar(20) not null,
-gender enum('male','female') default 'female',
-age int not null ,
 role enum('0','1','2','3') default '3',-- 0:doctor; 1:head_nurse; 2:ward_nurse; 3:emergency_nurse
 area enum('0','1','2','3') default '0',-- 0:isolation; 1:mild; 2:severe; 3:critical
-primary key (id),
-check (age between 18 and 100)
+primary key (id)
 )default CHARSET=utf8;
 -- insert user (name,password,gender,age,role,area) values
 

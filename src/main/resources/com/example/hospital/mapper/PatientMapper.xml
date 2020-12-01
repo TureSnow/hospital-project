@@ -4,9 +4,6 @@
   <resultMap id="BaseResultMap" type="com.example.hospital.model.Patient" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
     <result column="life_state" property="lifeState" jdbcType="CHAR" />
     <result column="area_level" property="areaLevel" jdbcType="CHAR" />
     <result column="illness_level" property="illnessLevel" jdbcType="CHAR" />
@@ -70,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, age, phone, gender, life_state, area_level, illness_level
+    id, name, life_state, area_level, illness_level
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.hospital.model.PatientExample" >
     select
@@ -106,11 +103,9 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into patient (name, age, phone, 
-      gender, life_state, area_level, 
+    insert into patient (name, life_state, area_level, 
       illness_level)
-    values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=CHAR}, #{lifeState,jdbcType=CHAR}, #{areaLevel,jdbcType=CHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{lifeState,jdbcType=CHAR}, #{areaLevel,jdbcType=CHAR}, 
       #{illnessLevel,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Patient" >
@@ -121,15 +116,6 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
-      </if>
-      <if test="age != null" >
-        age,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="gender != null" >
-        gender,
       </if>
       <if test="lifeState != null" >
         life_state,
@@ -144,15 +130,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null" >
-        #{gender,jdbcType=CHAR},
       </if>
       <if test="lifeState != null" >
         #{lifeState,jdbcType=CHAR},
@@ -180,15 +157,6 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.age != null" >
-        age = #{record.age,jdbcType=INTEGER},
-      </if>
-      <if test="record.phone != null" >
-        phone = #{record.phone,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=CHAR},
-      </if>
       <if test="record.lifeState != null" >
         life_state = #{record.lifeState,jdbcType=CHAR},
       </if>
@@ -207,9 +175,6 @@
     update patient
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      age = #{record.age,jdbcType=INTEGER},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=CHAR},
       life_state = #{record.lifeState,jdbcType=CHAR},
       area_level = #{record.areaLevel,jdbcType=CHAR},
       illness_level = #{record.illnessLevel,jdbcType=CHAR}
@@ -222,15 +187,6 @@
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null" >
-        gender = #{gender,jdbcType=CHAR},
       </if>
       <if test="lifeState != null" >
         life_state = #{lifeState,jdbcType=CHAR},
@@ -247,9 +203,6 @@
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Patient" >
     update patient
     set name = #{name,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
-      phone = #{phone,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
       life_state = #{lifeState,jdbcType=CHAR},
       area_level = #{areaLevel,jdbcType=CHAR},
       illness_level = #{illnessLevel,jdbcType=CHAR}
