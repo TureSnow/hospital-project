@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface LoginService {
     public Map<String,String> login(String username,String password) throws LoginException;
-    public int register(User user) throws RegisterException;
+    public User register(User user) throws RegisterException;
     public void logout();
 }

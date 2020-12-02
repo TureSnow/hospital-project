@@ -2,6 +2,7 @@ package com.example.hospital.service;
 
 import com.example.hospital.exception.NullFieldException;
 import com.example.hospital.exception.OccupiedUsernameException;
+import com.example.hospital.exception.RegisterException;
 import com.example.hospital.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class LoginServiceTest {
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
     @Test
     void register() throws NullFieldException, OccupiedUsernameException {
         User user1 = new User();
@@ -38,14 +39,21 @@ class LoginServiceTest {
         user4.setArea("0");
         user4.setRole("3");
 
-        if (userService == null){
+        if (loginService== null){
             System.out.println("login null");
             return;
         }
-        userService.createNewUser(user1);
-        userService.createNewUser(user2);
-        userService.createNewUser(user3);
-        userService.createNewUser(user4);
+
+        try {
+            loginService.register(user1);
+            loginService.register(user2);
+            loginService.register(user3);
+            loginService.register(user4);
+        } catch (RegisterException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }

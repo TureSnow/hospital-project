@@ -8,6 +8,7 @@ import com.example.hospital.model.User;
 import com.example.hospital.service.LoginService;
 import com.example.hospital.service.UserService;
 import com.example.hospital.utils.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,8 @@ public class LoginServiceImpl implements LoginService{
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
     public LoginServiceImpl(CustomUserDetailSevice userDetailSevice,UserService userService,
                             JwtTokenUtil util,PasswordEncoder encoder){
         this.userService=userService;
@@ -31,26 +34,35 @@ public class LoginServiceImpl implements LoginService{
     }
     @Override
     public Map<String, String> login(String username, String password) throws LoginException {
+        String token;
+        Map<String, String> tokenMap = new HashMap<>();
         UserDetails userDetails = userDetailSevice.loadUserByUsername(username);
-        if (userDetails == null||!password.equals(userDetails.getPassword())){
-            throw new LoginException("username error or password error");
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new LoginException("用户名或密码不正确");
         }
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        userDetails.getAuthorities().forEach(O->{
+            System.out.println(O.toString());
+        });
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        Map<String,String> tokenMap = new HashMap<>();
-        tokenMap.put("userId",String.valueOf(((MyUserDetails)userDetails).getId()));
-        tokenMap.put("token",jwtTokenUtil.getToken(userDetails));
+        token = jwtTokenUtil.generateToken(userDetails);
+        tokenMap.put("userId", String.valueOf(((MyUserDetails)userDetails).getId()));
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
         return tokenMap;
     }
 
     @Override
-    public int register(User user) throws RegisterException {
+    public User register(User user) throws RegisterException {
         UserDetails userDetails = userDetailSevice.loadUserByUsername(user.getName());
         if (userDetails != null){
             throw new RegisterException("name duplication!");
         }
-        return userService.createNewUser(user);
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        int id = userService.createNewUser(user);
+        user.setId(id);
+        return user;
     }
 
     @Override

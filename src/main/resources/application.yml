@@ -1,7 +1,6 @@
 server:
   port: 8081
 
-
 spring:
   datasource:
     name: hospital
@@ -16,10 +15,16 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+#### customized settings
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: H6yfqiYzAumMG9+WGLS4Kzc+T7I9F0DbL7nQFcNVVCEPVOuH1c43GeORD75cq8wb9Pd3Qxstpv0cyaefJX2lGHwvdWpF72bhoH27j2viCRM2IXq0IMh3d1N56RpAHFFJFhoLeQB9bfTT0M0Z6R3sOr2tZcl2fMGzesotw1JNOBqCRxqWFtmu6qaXAeXfI1kluaJg2IJd5DtI3fmydkx+Kd/wjkPxmHW0aPXLXw== #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Bearer  #JWT负载中拿到开头
+
+
 #showSql
 logging:
   level:
-    com:
-      example:
-        debug
+    root: debug
 

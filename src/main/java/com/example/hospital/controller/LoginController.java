@@ -7,6 +7,7 @@ import com.example.hospital.model.User;
 import com.example.hospital.service.LoginService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ public class LoginController {
     public CommonResult<Map<String,String>> login(String username,String password){
         try {
             Map map = loginService.login(username,password);
+            System.out.println(map.get("token"));
             return CommonResult.success(map);
         } catch (LoginException e) {
             e.printStackTrace();
@@ -30,10 +32,10 @@ public class LoginController {
     }
     @ApiOperation(value = "register, return userId")
     @PostMapping(value = "/register")
-    public CommonResult<Integer> register(User user)  {
+    public CommonResult<User> register(User user)  {
         try{
-            int userId = loginService.register(user);
-            return CommonResult.success(userId);
+            User user1 = loginService.register(user);
+            return CommonResult.success(user1);
         }catch (RegisterException e){
             return CommonResult.failed(e.getMessage());
         }

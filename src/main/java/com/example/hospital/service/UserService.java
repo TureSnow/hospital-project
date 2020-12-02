@@ -31,7 +31,10 @@ public class UserService {
     public User getUserByName(String name){
         UserExample example =  new UserExample();
         example.or().andNameEqualTo(name);
-        return userMapper.selectByExample(example).get(0);
+        List<User> users = userMapper.selectByExample(example);
+        if (users.size() == 0)
+            return null;
+        else return users.get(0);
     }
     public int createNewUser(User user){
         String username = user.getName();
