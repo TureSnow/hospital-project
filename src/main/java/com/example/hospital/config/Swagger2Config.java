@@ -30,9 +30,9 @@ public class Swagger2Config {
                 //为当前包下controller生成API文档
                 .apis(RequestHandlerSelectors.basePackage("com.example.hospital.controller"))
                 //为有@Api注解的Controller生成API文档
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+                //.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 //为有@ApiOperation注解的方法生成API文档
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                //.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(securitySchemes())

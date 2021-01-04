@@ -7,32 +7,46 @@ import com.example.hospital.model.User;
 import java.util.List;
 
 public interface HeadNurseService {
-    public List<Patient> getAllPatient();
+    List<Patient> getAllPatient();
+    /**
+     * @param lifeState  1:health;2:treating;3:dead; 4:all
+     * @param isMatchWard 1:match;2:dismatch;3:all ok
+     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
+     * @return 满足筛选条件的病人
+     */
+    List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard);
+
+    List<Patient> getNotMatchPatient();
+
+    List<User> getWardNurses();
+
+    List<Patient> getPatientByWardNurseId(int wardNurseId);
 
     /**
-     * 筛选
-     * @param isHealth
-     * @param isMatchWard
-     * @param lifeStatus
-     * @param IllnessLevel
-     * @return
+     * 将已有的user添加到治疗区域
+     * @param wardNurseId
+     * @return msg
      */
-    public List<Patient> getPatient(Boolean isHealth,Boolean isMatchWard,String lifeStatus, String IllnessLevel);
+    public String addWardNurse(int wardNurseId);
 
-    public List<Patient> getNotMatchPatient();
+    /**
+     * ward nurse从治疗区域移除
+     * @param wardNurseId
+     * @return msg
+     */
+    String deleteWardNurse(int wardNurseId);
 
-    public List<Patient> getPatientLifeStateById(int patientId);
+    /**
+     *
+     * @return all beds in this treatment
+     */
+    List<Bed> getAllBed();
 
-    public List<User> getWardNurses();
-
-    public List<Patient> getPatientByWardNurseId(int wardNurseId);
-
-    public String addWardNurse(User wardNurse);
-
-    public String deleteWardNurse(int wardNurseId);
-
-    public List<Bed> getAllBed();
-
-    public Patient getPatientByBed(int Bed);
+    /**
+     *
+     * @param BedId
+     * @return get patient in specified bed
+     */
+    Patient getPatientByBed(int BedId);
 
 }

@@ -7,13 +7,15 @@ import com.example.hospital.dao.UserMapper;
 import com.example.hospital.model.*;
 import com.example.hospital.service.DoctorService;
 import com.example.hospital.service.UserService;
+import com.example.hospital.utils.StringCheckUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
+@Service
 public class DoctorServiceImpl implements DoctorService {
     private UserService userService;
     private UserMapper userMapper;
@@ -46,8 +48,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     /**
-     * @param lifeState  0:health;1:treating;2:dead; 3:all
-     * @param isMatchWard 0:match;1:dismatch;2:all ok
+     * @param lifeState  0:health;1:treating; 2:dead; 3:all
+     * @param isMatchWard 0:match;1:dismatch; 2:all ok
      * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
      * @return 满足条件的病人
      */
@@ -175,6 +177,21 @@ public class DoctorServiceImpl implements DoctorService {
                 prev.setPatientId(null);
                 bed.setPatientId(patient.getId());
                 patient.setAreaLevel(bed.getLevel());
+                //查看隔离区是否有病人可以转入到该区域治疗
+                PatientExample example2 = new PatientExample();
+                example2.or().andIllnessLevelEqualTo(getArea()).andAreaLevelEqualTo("0");
+                List<Patient> patients = patientMapper.selectByExample(example2);
+                if (!(patients.size() ==0)){
+                    //有，选择一位住院
+                    Patient patient1=patients.get(0);
+                    patient1.setAreaLevel(getArea());
+                    prev.setPatientId(patient1.getId());
+                    patientMapper.updateByPrimaryKey(patient1);
+                    bedMapper.updateByPrimaryKey(prev);
+                    bedMapper.updateByPrimaryKey(bed);
+                    patientMapper.updateByPrimaryKey(patient);
+                    return "transfer "+patient.getName()+" OK!And "+patient1.getName()+"enter this treatment";
+                }
                 bedMapper.updateByPrimaryKey(prev);
                 bedMapper.updateByPrimaryKey(bed);
                 patientMapper.updateByPrimaryKey(patient);
@@ -219,7 +236,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String updatePatientIllnessLevel(int patientId, String level){
-        if (!checkString(level,"0123"))
+        if (!StringCheckUtil.checkString(level,"0123"))
             return "param error!";
         Patient patient=patientMapper.selectByPrimaryKey(patientId);
         patient.setIllnessLevel(level);
@@ -229,7 +246,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String updatePatientLifeStatus(int patientId, String level) {
-        if (!checkString(level,"12"))
+        if (!StringCheckUtil.checkString(level,"12"))
             return "param error！";
         Patient patient=patientMapper.selectByPrimaryKey(patientId);
         patient.setLifeState(level);
@@ -239,9 +256,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String addNaSheet(int patientId, Date date, String result, String illnessLevel) {
-        if(!checkString(result,"01"))
+        if(!StringCheckUtil.checkString(result,"01"))
             return "param error!";
-        if (!checkString(illnessLevel,"0123"))
+        if (!StringCheckUtil.checkString(illnessLevel,"0123"))
             return "param error!";
         NaSheet naSheet = new NaSheet();
         naSheet.setDate(date);
@@ -269,17 +286,19 @@ public class DoctorServiceImpl implements DoctorService {
         List<Bed> beds = bedMapper.selectByExample(example);
         Bed bed=beds.get(0);
         bed.setPatientId(null);
+
+        //查看隔离区是否有病人等待住院
+        PatientExample example1 = new PatientExample();
+        example1.or().andIllnessLevelEqualTo(getArea()).andAreaLevelEqualTo("0");
+        List<Patient> patients = patientMapper.selectByExample(example1);
+        if (!(patients.size() ==0)){
+            //有，选择一位住院
+            Patient patient1=patients.get(0);
+            patient1.setAreaLevel(getArea());
+            bed.setPatientId(patient1.getId());
+            patientMapper.updateByPrimaryKey(patient1);
+        }
         bedMapper.updateByPrimaryKey(bed);
         return "discharge ok!";
-    }
-
-    public boolean checkString(String s,String allow){
-        int len=allow.length();
-        for (int i = 0; i < len; i++) {
-            if (!s.equals(allow.charAt(i)+"")){
-                return false;
-            }
-        }
-       return true;
     }
 }

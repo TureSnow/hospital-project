@@ -7,7 +7,7 @@ import com.example.hospital.model.User;
 import java.util.Map;
 
 public interface LoginService {
-    public Map<String,String> login(String username,String password) throws LoginException;
-    public User register(User user) throws RegisterException;
-    public void logout();
+    Map<String,String> login(String username, String password) throws LoginException;
+    User register(User user) throws RegisterException;
+    void logout();
 }

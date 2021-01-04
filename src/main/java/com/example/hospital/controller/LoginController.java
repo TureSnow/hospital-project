@@ -6,9 +6,7 @@ import com.example.hospital.exception.RegisterException;
 import com.example.hospital.model.User;
 import com.example.hospital.service.LoginService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,9 +18,9 @@ public class LoginController {
     }
     @ApiOperation("login and return token map")
     @PostMapping("/login")
-    public CommonResult<Map<String,String>> login(String username,String password){
+    public CommonResult<Map<String,String>> login(@RequestBody Map<String,String> param){
         try {
-            Map map = loginService.login(username,password);
+            Map map = loginService.login(param.get("username"),param.get("password"));
             System.out.println(map.get("token"));
             return CommonResult.success(map);
         } catch (LoginException e) {
