@@ -111,11 +111,12 @@ DROP TABLE IF EXISTS `notify`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notify` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
   `content` varchar(500) NOT NULL,
   `is_read` enum('0','1') DEFAULT '0',
   `date` date NOT NULL,
-  PRIMARY KEY (`user_id`,`date`),
+  PRIMARY KEY (`id`),
   CONSTRAINT `notify_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

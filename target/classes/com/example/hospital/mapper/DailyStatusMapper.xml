@@ -103,20 +103,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.DailyStatus" >
-    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into daily_status (date, temperature, life_state, 
-      NA_result, symptom)
-    values (#{date,jdbcType=DATE}, #{temperature,jdbcType=REAL}, #{lifeState,jdbcType=CHAR}, 
-      #{naResult,jdbcType=CHAR}, #{symptom,jdbcType=VARCHAR})
+    insert into daily_status (patient_id, date, temperature, 
+      life_state, NA_result, symptom
+      )
+    values (#{patientId,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{temperature,jdbcType=REAL}, 
+      #{lifeState,jdbcType=CHAR}, #{naResult,jdbcType=CHAR}, #{symptom,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.DailyStatus" >
-    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into daily_status
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patientId != null" >
+        patient_id,
+      </if>
       <if test="date != null" >
         date,
       </if>
@@ -134,6 +133,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patientId != null" >
+        #{patientId,jdbcType=INTEGER},
+      </if>
       <if test="date != null" >
         #{date,jdbcType=DATE},
       </if>

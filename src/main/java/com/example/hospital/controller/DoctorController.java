@@ -41,9 +41,9 @@ public class DoctorController {
     @ApiOperation("根据筛选得到符合筛选条件的病人")
     public CommonResult<List<Patient>> getPatient(@RequestBody Map<String,Integer> param){
         List<Patient> patients = doctorService.getPatient(param.get("lifeState"), param.get("illnessLevel"), param.get("isMatch"));
-        if (patients ==null)
-            return CommonResult.failed();
-        else return CommonResult.success(patients);
+//        if (patients ==null)
+//            return CommonResult.failed();
+        return CommonResult.success(patients);
     }
     @GetMapping("/dischargeable")
     @ApiOperation("得到符合出院条件的病人")
