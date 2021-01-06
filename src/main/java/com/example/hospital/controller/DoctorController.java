@@ -28,7 +28,7 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @PostMapping("/allPatient")
+    @GetMapping("/allPatient")
     @ApiOperation("得到该治疗区域的所有病人")
     public CommonResult<List<Patient>> getAllPatient(){
         List<Patient> allPatient = doctorService.getAllPatient();
@@ -40,21 +40,21 @@ public class DoctorController {
     @PostMapping("/filter")
     @ApiOperation("根据筛选得到符合筛选条件的病人")
     public CommonResult<List<Patient>> getPatient(@RequestBody Map<String,Integer> param){
-        List<Patient> patients = doctorService.getPatient(param.get("lifeState"), param.get("illnessLevel"), param.get("illnessLevel"));
+        List<Patient> patients = doctorService.getPatient(param.get("lifeState"), param.get("illnessLevel"), param.get("isMatch"));
         if (patients ==null)
             return CommonResult.failed();
         else return CommonResult.success(patients);
     }
-    @PostMapping("/Dpatients")
-    @ApiOperation("根据筛选得到符合出院条件的病人")
+    @GetMapping("/dischargeable")
+    @ApiOperation("得到符合出院条件的病人")
     public CommonResult<List<Patient>> getPatientDischarge(){
         List<Patient> patients = doctorService.getPatientCanDischarge();
         if (patients ==null)
             return CommonResult.failed();
         else return CommonResult.success(patients);
     }
-    @PostMapping("/notMatch")
-    @ApiOperation("根据筛选得到符合出院条件的病人")
+    @GetMapping("/notMatch")
+    @ApiOperation("得到符合转移条件的病人")
     public CommonResult<List<Patient>> getNotMatchPatient(){
         List<Patient> patients = doctorService.getNotMatchPatient();
         if (patients ==null)
@@ -70,7 +70,7 @@ public class DoctorController {
     @PostMapping("/singlePatient")
     @ApiOperation("查看单个病人信息")
     public CommonResult<Patient> getPatienById(@RequestBody Map<String,Integer> param){
-        Patient patient = doctorService.getPatientStateById(param.get("patientId"));
+        Patient patient = doctorService.getPatientById(param.get("patientId"));
         if (patient==null)
             return CommonResult.failed();
         else return CommonResult.success(patient);
@@ -123,7 +123,7 @@ public class DoctorController {
         //将date类型的字符串转换为data类型对象
         DateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         Date date = simpleDateFormat.parse(param.get("date").toString());
-//        System.out.println("病人id为 "+param.get("patientId").toString());
+
         String msg = doctorService.addNaSheet(Integer.parseInt(param.get("patientId").toString()),date,
                 (String) param.get("result"), (String)param.get("illnessLevel"));
         return CommonResult.success(msg);

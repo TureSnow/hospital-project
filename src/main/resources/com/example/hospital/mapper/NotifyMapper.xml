@@ -101,20 +101,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Notify" >
-    <selectKey resultType="java.lang.Integer" keyProperty="userId" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into notify (date, content, is_read
-      )
-    values (#{date,jdbcType=DATE}, #{content,jdbcType=VARCHAR}, #{isRead,jdbcType=CHAR}
-      )
+    insert into notify (user_id, date, content, 
+      is_read)
+    values (#{userId,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{content,jdbcType=VARCHAR}, 
+      #{isRead,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Notify" >
-    <selectKey resultType="java.lang.Integer" keyProperty="userId" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into notify
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
       <if test="date != null" >
         date,
       </if>
@@ -126,6 +123,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
       <if test="date != null" >
         #{date,jdbcType=DATE},
       </if>

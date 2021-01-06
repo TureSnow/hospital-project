@@ -62,8 +62,10 @@ create table daily_status(
 patient_id int(18) not null ,
 date DATE not null ,
 temperature float not null ,
-life_state enum('0','1','2')default '0', -- 0:healthy; 1:treating; 2:dead
-NA_result enum('0','1') default '1', -- 0:negative; 1:positive
+life_state enum('0','1','2')default '0',
+-- 0:healthy; 1:treating; 2:dead
+NA_result enum('0','1') default '1',
+ -- 0:negative; 1:positive
 symptom varchar(500),
 primary key(patient_id,date),
 foreign key(patient_id) references patient(id)

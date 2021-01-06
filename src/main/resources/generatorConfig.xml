@@ -44,13 +44,10 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="notify">
-            <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="na_sheet">
-            <generatedKey column="patient_id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="daily_status">
-            <generatedKey column="patient_id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="bed">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

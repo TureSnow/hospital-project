@@ -6,7 +6,6 @@ import com.example.hospital.exception.LoginException;
 import com.example.hospital.exception.RegisterException;
 import com.example.hospital.model.User;
 import com.example.hospital.service.LoginService;
-import com.example.hospital.service.UserService;
 import com.example.hospital.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +19,13 @@ import java.util.Map;
 @Service
 public class LoginServiceImpl implements LoginService{
     private final CustomUserDetailSevice userDetailSevice;
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-    public LoginServiceImpl(CustomUserDetailSevice userDetailSevice,UserService userService,
-                            JwtTokenUtil util,PasswordEncoder encoder){
+    public LoginServiceImpl(CustomUserDetailSevice userDetailSevice, UserServiceImpl userService,
+                            JwtTokenUtil util, PasswordEncoder encoder){
         this.userService=userService;
         this.userDetailSevice = userDetailSevice;
         this.jwtTokenUtil = util;

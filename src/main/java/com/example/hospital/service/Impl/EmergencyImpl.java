@@ -7,7 +7,6 @@ import com.example.hospital.model.BedExample;
 import com.example.hospital.model.Patient;
 import com.example.hospital.model.PatientExample;
 import com.example.hospital.service.EmergencyNurseService;
-import com.example.hospital.service.UserService;
 import com.example.hospital.utils.StringCheckUtil;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class EmergencyImpl implements EmergencyNurseService {
     private PatientMapper patientMapper;
     private BedMapper bedMapper;
-    public EmergencyImpl(UserService userService,PatientMapper patientMapper, BedMapper bedMapper){
+    public EmergencyImpl(UserServiceImpl userService, PatientMapper patientMapper, BedMapper bedMapper){
         this.patientMapper = patientMapper;
         this.bedMapper = bedMapper;
     }
