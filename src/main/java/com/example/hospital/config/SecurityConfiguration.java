@@ -4,7 +4,7 @@ import com.example.hospital.component.JwtAuthenticationTokenFilter;
 import com.example.hospital.component.RestAuthenticationEntryPoint;
 import com.example.hospital.component.RestfulAccessDeniedHandler;
 import com.example.hospital.dto.CustomUserDetailSevice;
-import com.example.hospital.service.UserService;
+import com.example.hospital.service.Impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,11 +25,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final RestAuthenticationEntryPoint entryPoint;
     private final RestfulAccessDeniedHandler handler;
 
-    public SecurityConfiguration(UserService userService,RestAuthenticationEntryPoint entryPoint,
+    public SecurityConfiguration(UserServiceImpl userService, RestAuthenticationEntryPoint entryPoint,
                                  RestfulAccessDeniedHandler handler) {
         this.userService = userService;
         this.entryPoint = entryPoint;

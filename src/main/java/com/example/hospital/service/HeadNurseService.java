@@ -9,12 +9,13 @@ import java.util.List;
 public interface HeadNurseService {
     List<Patient> getAllPatient();
     /**
-     * @param lifeState  1:health;2:treating;3:dead; 4:all
-     * @param isMatchWard 1:match;2:dismatch;3:all ok
-     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
+     * 筛选病人
+     * @param lifeState  1:health; 2:treating; 3:dead; 4:all
+     * @param isMatchWard 1:match; 2:dismatch; 3:all ok
+     * @param IllnessLevel 1:mild; 2:severe; 3:critical; 4:all ok
      * @return 满足筛选条件的病人
      */
-    List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard);
+    List<Patient> getPatient(int lifeState, int IllnessLevel, int isMatchWard);
 
     List<Patient> getNotMatchPatient();
 
@@ -37,15 +38,15 @@ public interface HeadNurseService {
     String deleteWardNurse(int wardNurseId);
 
     /**
-     *
-     * @return all beds in this treatment
+     *all beds in this treatment
+     * @return
      */
     List<Bed> getAllBed();
 
     /**
-     *
+     *get patient in specified bed
      * @param BedId
-     * @return get patient in specified bed
+     * @return
      */
     Patient getPatientByBed(int BedId);
 

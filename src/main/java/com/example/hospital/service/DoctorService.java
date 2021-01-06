@@ -1,4 +1,6 @@
 package com.example.hospital.service;
+import com.example.hospital.model.Bed;
+import com.example.hospital.model.NaSheet;
 import com.example.hospital.model.Patient;
 import com.example.hospital.model.User;
 
@@ -11,6 +13,8 @@ import java.util.List;
 public interface DoctorService {
 
     List<Patient> getAllPatient();
+
+    void handFree();
 
     /**
      * @param lifeState  1:health;2:treating;3:dead; 4:all
@@ -33,7 +37,7 @@ public interface DoctorService {
     String transferOtherArea(int patientId);
 
     //todo :获得单个病人信息
-    Patient getPatientStateById(int patientId);
+    Patient getPatientById(int patientId);
 
     //todo
     User getHeadNurse();
@@ -55,5 +59,7 @@ public interface DoctorService {
 
     //todo :允许病人出院
     String discharge(int patientId);
+
+    List<Bed> getFreeBed();
 
 }

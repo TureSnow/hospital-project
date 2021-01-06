@@ -1,7 +1,7 @@
 package com.example.hospital.dto;
 
 import com.example.hospital.model.User;
-import com.example.hospital.service.UserService;
+import com.example.hospital.service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class CustomUserDetailSevice implements UserDetailsService {
     @Autowired
-    private  UserService userService;
+    private UserServiceImpl userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override

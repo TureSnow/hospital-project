@@ -7,6 +7,10 @@ import com.example.hospital.service.DoctorService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,7 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @PostMapping("/allPatient")
+    @GetMapping("/allPatient")
     @ApiOperation("得到该治疗区域的所有病人")
     public CommonResult<List<Patient>> getAllPatient(){
         List<Patient> allPatient = doctorService.getAllPatient();
@@ -41,16 +45,16 @@ public class DoctorController {
             return CommonResult.failed();
         else return CommonResult.success(patients);
     }
-    @PostMapping("/Dpatients")
-    @ApiOperation("根据筛选得到符合出院条件的病人")
+    @GetMapping("/dischargeable")
+    @ApiOperation("得到符合出院条件的病人")
     public CommonResult<List<Patient>> getPatientDischarge(){
         List<Patient> patients = doctorService.getPatientCanDischarge();
         if (patients ==null)
             return CommonResult.failed();
         else return CommonResult.success(patients);
     }
-    @PostMapping("/notMatch")
-    @ApiOperation("根据筛选得到符合出院条件的病人")
+    @GetMapping("/notMatch")
+    @ApiOperation("得到符合转移条件的病人")
     public CommonResult<List<Patient>> getNotMatchPatient(){
         List<Patient> patients = doctorService.getNotMatchPatient();
         if (patients ==null)
@@ -66,7 +70,7 @@ public class DoctorController {
     @PostMapping("/singlePatient")
     @ApiOperation("查看单个病人信息")
     public CommonResult<Patient> getPatienById(@RequestBody Map<String,Integer> param){
-        Patient patient = doctorService.getPatientStateById(param.get("patientId"));
+        Patient patient = doctorService.getPatientById(param.get("patientId"));
         if (patient==null)
             return CommonResult.failed();
         else return CommonResult.success(patient);
@@ -115,8 +119,11 @@ public class DoctorController {
     }
     @PostMapping("/addSheet")
     @ApiOperation("添加核酸检测单")
-    public CommonResult<String> addNaSheet(@RequestBody Map<String,Object>param){
-        String msg = doctorService.addNaSheet((Integer)param.get("patientId"),(Date)param.get("date") ,
+    public CommonResult<String> addNaSheet(@RequestBody Map<String,Object>param) throws ParseException {
+        //将date类型的字符串转换为data类型对象
+        DateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat.parse(param.get("date").toString());
+        String msg = doctorService.addNaSheet(Integer.parseInt(param.get("patientId").toString()),date,
                 (String) param.get("result"), (String)param.get("illnessLevel"));
         return CommonResult.success(msg);
     }

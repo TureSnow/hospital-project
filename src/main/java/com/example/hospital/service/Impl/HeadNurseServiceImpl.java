@@ -6,7 +6,6 @@ import com.example.hospital.dao.PatientMapper;
 import com.example.hospital.dao.UserMapper;
 import com.example.hospital.model.*;
 import com.example.hospital.service.HeadNurseService;
-import com.example.hospital.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 @Service
 public class HeadNurseServiceImpl implements HeadNurseService {
-    private UserService userService;
+    private UserServiceImpl userService;
     private UserMapper userMapper;
     private PatientMapper patientMapper;
     private BedMapper bedMapper;
     private NaSheetMapper naSheetMapper;
-    public HeadNurseServiceImpl(UserService userService, UserMapper userMapper, PatientMapper patientMapper, BedMapper bedMapper, NaSheetMapper naSheetMapper){
+    public HeadNurseServiceImpl(UserServiceImpl userService, UserMapper userMapper, PatientMapper patientMapper, BedMapper bedMapper, NaSheetMapper naSheetMapper){
         this.userService = userService;
         this.userMapper = userMapper;
         this.patientMapper = patientMapper;
@@ -67,10 +66,6 @@ public class HeadNurseServiceImpl implements HeadNurseService {
             }
         }
         switch (IllnessLevel) {
-            case 0:{
-                example.or().andIllnessLevelEqualTo("0");
-                break;
-            }
             case 1:{
                 example.or().andIllnessLevelEqualTo("1");
                 break;
