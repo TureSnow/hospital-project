@@ -105,13 +105,13 @@ public class DoctorController {
         }
         return CommonResult.success(patientByWardNurseId);
     }
-    @PostMapping("/updateIllnessLeve")
+    @PostMapping("/updateLevel")
     @ApiOperation("修改病人病情评级")
     public CommonResult<String> updatePatientIllnessLevel(@RequestBody Map<String,String> param){
         String msg = doctorService.updatePatientIllnessLevel(Integer.parseInt(param.get("patientId")), param.get("level"));
         return CommonResult.success(msg);
     }
-    @PostMapping("/updateLifeState")
+    @PostMapping("/updateLife")
     @ApiOperation("修改病人生命状态")
     public CommonResult<String> updatePatientLifeStatus(@RequestBody Map<String,String> param){
         String msg = doctorService.updatePatientLifeStatus(Integer.parseInt(param.get("patientId")), param.get("level"));
