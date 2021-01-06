@@ -51,16 +51,17 @@ public class HeadController {
         }
         return CommonResult.success(wardNurse2Patient);
     }
+
     @PostMapping("/addNurse")
     @ApiOperation("将已有的user添加为本区域的病人")
-    public CommonResult<String> addWardNurse(@RequestBody Map<String,Integer> param){
-        String msg = headNurseService.addWardNurse(param.get("wardNurseId"));
+    public CommonResult<String> addWardNurse(@RequestBody Map<String,String> param){
+        String msg = headNurseService.addWardNurse(param.get("wardNurseName"));
         return CommonResult.success(msg);
     }
     @PostMapping("/deleteNurse")
     @ApiOperation("将病房护士移除本区域")
-    public CommonResult<String> deleteNurse(@RequestBody Map<String,Integer> param){
-        String msg = headNurseService.deleteWardNurse(param.get("wardNurseId"));
+    public CommonResult<String> deleteNurse(@RequestBody Map<String,String> param){
+        String msg = headNurseService.deleteWardNurse(param.get("wardNurseName"));
         return CommonResult.success(msg);
     }
     @GetMapping("/allBed")

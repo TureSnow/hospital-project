@@ -147,15 +147,15 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     }
 
     @Override
-    public String addWardNurse(int wardNurse) {
-        User user=userMapper.selectByPrimaryKey(wardNurse);
+    public String addWardNurse(String wardNurseName) {
+        User user=userService.getUserByName(wardNurseName);
         if (user==null){
             return "no that user";
         }
         if (!user.getRole().equals("2")){
             return "the user isn't ward nurse";
         }
-        List<Patient> ward2Patient = getPatientByWardNurseId(wardNurse);
+        List<Patient> ward2Patient = getPatientByWardNurseId(user.getId());
         if (user.getArea().equals("0")||ward2Patient==null||ward2Patient.size()==0){
             user.setArea(getArea());
             BedExample example = new BedExample();
@@ -166,7 +166,7 @@ public class HeadNurseServiceImpl implements HeadNurseService {
                 int a=0;
                 int mark=area2bed(getArea());
                 for (Bed bed:beds){
-                    bed.setNurseId(wardNurse);
+                    bed.setNurseId(user.getId());
                     a+=1;
                     bedMapper.updateByPrimaryKey(bed);
                     if (a>=mark)
@@ -180,15 +180,15 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     }
 
     @Override
-    public String deleteWardNurse(int wardNurseId) {
-        User user = userMapper.selectByPrimaryKey(wardNurseId);
+    public String deleteWardNurse(String wardNurseName) {
+        User user = userService.getUserByName(wardNurseName);
         if (user==null){
             return "no that user";
         }
         if (!user.getRole().equals("2")){
             return "the user isn't ward nurse";
         }
-        List<Patient> ward2Patient = getPatientByWardNurseId(wardNurseId);
+        List<Patient> ward2Patient = getPatientByWardNurseId(user.getId());
         if (user.getArea().equals("0")||ward2Patient==null||ward2Patient.size()==0){
             user.setArea("0");
             userMapper.updateByPrimaryKey(user);

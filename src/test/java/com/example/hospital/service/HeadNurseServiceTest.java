@@ -39,16 +39,16 @@ class HeadNurseServiceTest {
                 System.out.println("login null");
                 return;
             }
-            loginService.login("hnurse1","hnurse");
-            headNurseService.addWardNurse(8);
-            headNurseService.addWardNurse(14);
-            headNurseService.addWardNurse(19);
-            loginService.login("anna","123456");
-            headNurseService.addWardNurse(15);
-            headNurseService.addWardNurse(16);
-            loginService.login("david","123456");
-            headNurseService.addWardNurse(17);
-            headNurseService.addWardNurse(18);
+//            loginService.login("hnurse1","hnurse");
+//            headNurseService.addWardNurse(8);
+//            headNurseService.addWardNurse(14);
+//            headNurseService.addWardNurse(19);
+//            loginService.login("anna","123456");
+//            headNurseService.addWardNurse(15);
+//            headNurseService.addWardNurse(16);
+//            loginService.login("david","123456");
+//            headNurseService.addWardNurse(17);
+//            headNurseService.addWardNurse(18);
         } catch (LoginException e) {
             e.printStackTrace();
         }

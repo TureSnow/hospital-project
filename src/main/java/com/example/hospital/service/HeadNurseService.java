@@ -25,17 +25,17 @@ public interface HeadNurseService {
 
     /**
      * 将已有的user添加到治疗区域
-     * @param wardNurseId
+     * @param wardNurseName
      * @return msg
      */
-    public String addWardNurse(int wardNurseId);
+    String addWardNurse(String wardNurseName);
 
     /**
      * ward nurse从治疗区域移除
-     * @param wardNurseId
+     * @param wardNurseName
      * @return msg
      */
-    String deleteWardNurse(int wardNurseId);
+    String deleteWardNurse(String wardNurseName);
 
     /**
      *all beds in this treatment
