@@ -1,0 +1,25 @@
+
+n
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(œﬂ…e
+Z	java:S112f"FDefine and throw a dedicated exception instead of using a generic one.(Ï·§
+
+o
+java:S2293G"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÛŒ≥Ÿ
+`	java:S112_"FDefine and throw a dedicated exception instead of using a generic one.(ı‹ó∫˛ˇˇˇˇ
+Y
+java:S1155K">Use isEmpty() to check whether the collection is empty or not.(Ì¥’˚¸ˇˇˇˇ
+^
+java:S1192™"GDefine a constant instead of duplicating this literal "level" 12 times.(ÓÓˆ‹
+g
+java:S1192Ó"KDefine a constant instead of duplicating this literal "patientId" 10 times.(ë©—‹¯ˇˇˇˇ
+^
+java:S1192"GDefine a constant instead of duplicating this literal "bedId" 10 times.(˚á¶ø
+`
+java:S1192≤"IDefine a constant instead of duplicating this literal "nurseId" 10 times.(ã›Ωﬂ
+`	java:S112X"FDefine and throw a dedicated exception instead of using a generic one.(‘¡ÒÕ¯ˇˇˇˇ
+_
+java:S1192¨"HDefine a constant instead of duplicating this literal "wardId" 10 times.(†ã„Ó
+v
+java:S14888"`Immediately return this expression instead of assigning it to the temporary variable "criteria".(∂’ØÏ
+S
+java:S11551">Use isEmpty() to check whether the collection is empty or not.(¡Ωºs

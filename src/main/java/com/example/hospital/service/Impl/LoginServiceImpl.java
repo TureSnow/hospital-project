@@ -45,10 +45,17 @@ public class LoginServiceImpl implements LoginService{
         });
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //返回值增加用户信息
+        User user = userService.getUserByName(username);
         token = jwtTokenUtil.generateToken(userDetails);
-        tokenMap.put("userId", String.valueOf(((MyUserDetails)userDetails).getId()));
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
+        tokenMap.put("area",user.getArea());
+        tokenMap.put("username",user.getName());
+        tokenMap.put("role",user.getRole());
+        tokenMap.put("id",user.getId()+"");
+
         return tokenMap;
     }
 

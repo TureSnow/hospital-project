@@ -1,0 +1,11 @@
+
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(©İ½Éüÿÿÿÿ8 ø¶â.
+]	java:S1251"<This block of commented-out lines of code should be removed.(¾²ÛÕÿÿÿÿÿ8ˆÕ—¶â.
+¦
+java:S4449 "ˆAnnotate the parameter with @javax.annotation.Nullable in method 'ok' declaration, or make sure that null can not be passed as argument.(ş›ÛŒ8„¶Ãã.
+Q
+java:S3740"/Provide the parametrized type for this generic.(¸Íı‰ùÿÿÿÿ8ÔåŠ·â.
+Q
+java:S3740"/Provide the parametrized type for this generic.(¨éÖˆùÿÿÿÿ8µåÃã.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(”¬×±8•“„·â.
+X	java:S125"<This block of commented-out lines of code should be removed.(„§ñ£8 ø¶â.

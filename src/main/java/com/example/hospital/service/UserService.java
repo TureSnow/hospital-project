@@ -8,6 +8,7 @@ import com.example.hospital.model.User;
 import com.example.hospital.model.UserExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,10 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     private UserMapper userMapper;
     private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
     public UserService(UserMapper userMapper){
         this.userMapper = userMapper;
     }

@@ -7,6 +7,10 @@ import com.example.hospital.service.DoctorService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -115,8 +119,12 @@ public class DoctorController {
     }
     @PostMapping("/addSheet")
     @ApiOperation("添加核酸检测单")
-    public CommonResult<String> addNaSheet(@RequestBody Map<String,Object>param){
-        String msg = doctorService.addNaSheet((Integer)param.get("patientId"),(Date)param.get("date") ,
+    public CommonResult<String> addNaSheet(@RequestBody Map<String,Object>param) throws ParseException {
+        //将date类型的字符串转换为data类型对象
+        DateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat.parse(param.get("date").toString());
+//        System.out.println("病人id为 "+param.get("patientId").toString());
+        String msg = doctorService.addNaSheet(Integer.parseInt(param.get("patientId").toString()),date,
                 (String) param.get("result"), (String)param.get("illnessLevel"));
         return CommonResult.success(msg);
     }

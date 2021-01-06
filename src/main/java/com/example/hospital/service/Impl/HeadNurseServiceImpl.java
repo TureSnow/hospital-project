@@ -7,6 +7,7 @@ import com.example.hospital.dao.UserMapper;
 import com.example.hospital.model.*;
 import com.example.hospital.service.HeadNurseService;
 import com.example.hospital.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     private PatientMapper patientMapper;
     private BedMapper bedMapper;
     private NaSheetMapper naSheetMapper;
+
     public HeadNurseServiceImpl(UserService userService, UserMapper userMapper, PatientMapper patientMapper, BedMapper bedMapper, NaSheetMapper naSheetMapper){
         this.userService = userService;
         this.userMapper = userMapper;

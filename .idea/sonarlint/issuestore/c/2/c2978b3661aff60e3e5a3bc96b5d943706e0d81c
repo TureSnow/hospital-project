@@ -1,0 +1,9 @@
+
+T
+java:S1155#">Use isEmpty() to check whether the collection is empty or not.(º™Û¬
+u
+java:S1488,"ZImmediately return this expression instead of assigning it to the temporary variable "id".(«˜µ×ýÿÿÿÿ
+f	java:S116"QRename this field "LOGGER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“¥Ä§
+Q	java:S1250"<This block of commented-out lines of code should be removed.(·õ‚Ž
+@
+java:S1068"*Remove this unused "LOGGER" private field.(“¥Ä§

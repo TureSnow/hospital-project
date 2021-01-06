@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hospital.dao.DailyStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.DailyStatus" >
+    <id column="patient_id" property="patientId" jdbcType="INTEGER" />
+    <id column="date" property="date" jdbcType="DATE" />
+    <result column="temperature" property="temperature" jdbcType="REAL" />
+    <result column="life_state" property="lifeState" jdbcType="CHAR" />
+    <result column="NA_result" property="naResult" jdbcType="CHAR" />
+    <result column="symptom" property="symptom" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    patient_id, date, temperature, life_state, NA_result, symptom
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.hospital.model.DailyStatusExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from daily_status
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from daily_status
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from daily_status
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.hospital.model.DailyStatusExample" >
+    delete from daily_status
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.DailyStatus" >
+    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into daily_status (date, temperature, life_state, 
+      NA_result, symptom)
+    values (#{date,jdbcType=DATE}, #{temperature,jdbcType=REAL}, #{lifeState,jdbcType=CHAR}, 
+      #{naResult,jdbcType=CHAR}, #{symptom,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.DailyStatus" >
+    <selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into daily_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="temperature != null" >
+        temperature,
+      </if>
+      <if test="lifeState != null" >
+        life_state,
+      </if>
+      <if test="naResult != null" >
+        NA_result,
+      </if>
+      <if test="symptom != null" >
+        symptom,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="temperature != null" >
+        #{temperature,jdbcType=REAL},
+      </if>
+      <if test="lifeState != null" >
+        #{lifeState,jdbcType=CHAR},
+      </if>
+      <if test="naResult != null" >
+        #{naResult,jdbcType=CHAR},
+      </if>
+      <if test="symptom != null" >
+        #{symptom,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.hospital.model.DailyStatusExample" resultType="java.lang.Integer" >
+    select count(*) from daily_status
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update daily_status
+    <set >
+      <if test="record.patientId != null" >
+        patient_id = #{record.patientId,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.temperature != null" >
+        temperature = #{record.temperature,jdbcType=REAL},
+      </if>
+      <if test="record.lifeState != null" >
+        life_state = #{record.lifeState,jdbcType=CHAR},
+      </if>
+      <if test="record.naResult != null" >
+        NA_result = #{record.naResult,jdbcType=CHAR},
+      </if>
+      <if test="record.symptom != null" >
+        symptom = #{record.symptom,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update daily_status
+    set patient_id = #{record.patientId,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      temperature = #{record.temperature,jdbcType=REAL},
+      life_state = #{record.lifeState,jdbcType=CHAR},
+      NA_result = #{record.naResult,jdbcType=CHAR},
+      symptom = #{record.symptom,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.DailyStatus" >
+    update daily_status
+    <set >
+      <if test="temperature != null" >
+        temperature = #{temperature,jdbcType=REAL},
+      </if>
+      <if test="lifeState != null" >
+        life_state = #{lifeState,jdbcType=CHAR},
+      </if>
+      <if test="naResult != null" >
+        NA_result = #{naResult,jdbcType=CHAR},
+      </if>
+      <if test="symptom != null" >
+        symptom = #{symptom,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.DailyStatus" >
+    update daily_status
+    set temperature = #{temperature,jdbcType=REAL},
+      life_state = #{lifeState,jdbcType=CHAR},
+      NA_result = #{naResult,jdbcType=CHAR},
+      symptom = #{symptom,jdbcType=VARCHAR}
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </update>
+</mapper>
