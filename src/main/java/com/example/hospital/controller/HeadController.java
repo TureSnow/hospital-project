@@ -31,7 +31,7 @@ public class HeadController {
     }
 
     @PostMapping("/filter")
-    @ApiOperation("筛选本资料区域区域的所有病人")
+    @ApiOperation("筛选本治疗区域的所有病人")
     public CommonResult<List<Patient>> filter(@RequestBody Map<String,Integer>param){
         List<Patient> Patient = headNurseService.getPatient(param.get("lifeState"),param.get("illnessLevel"),param.get("isMatch"));
         if (Patient.size()>0){
@@ -66,7 +66,7 @@ public class HeadController {
         List<Bed> allBed = headNurseService.getAllBed();
         return CommonResult.success(allBed);
     }
-    @GetMapping("/bed2patient")
+    @PostMapping("/bed2patient")
     @ApiOperation("得到特定的病床上的病人")
     public CommonResult<Patient> getPatientByPatient(@RequestBody Map<String, Integer> param){
         Patient bed2patient = headNurseService.getPatientByBed(param.get("bedId"));
