@@ -94,6 +94,7 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
     }
+
     @Override
     public List<Patient> getAllPatient() {
         String area = getArea();
@@ -103,59 +104,27 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     /**
-     * @param lifeState  0:health;1:treating; 2:dead; 3:all
-     * @param isMatchWard 0:match;1:dismatch; 2:all ok
+     * 筛选满足条件的病人
+     * @param lifeState  0:health; 1:treating; 2:dead; 3:all
+     * @param isMatchWard 0:match; 1:not match; 2:all ok
      * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
-     * @return 满足条件的病人
+     * @return
      */
     @Override
     public List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard){
         String area = getArea();
         PatientExample example = new PatientExample();
         example.or().andAreaLevelEqualTo(area);
-        switch (lifeState) {
-            case 0:{
-                example.or().andLifeStateEqualTo("0");
-                break;
-            }
-            case 1:{
-                example.or().andLifeStateEqualTo("1");
-                break;
-            }
-            case 2:{
-                example.or().andLifeStateEqualTo("2");
-                break;
-            }
-            case 3:{
-                //do nothing
-                break;
-            }
+        if (lifeState!=3){
+            example.or().andLifeStateEqualTo(lifeState+"");
         }
-        switch (IllnessLevel) {
-            case 0:{
-                example.or().andIllnessLevelEqualTo("0");
-                break;
-            }
-            case 1:{
-                example.or().andIllnessLevelEqualTo("1");
-                break;
-            }
-            case 2:{
-                example.or().andIllnessLevelEqualTo("2");
-                break;
-            }
-            case 3:{
-                example.or().andIllnessLevelEqualTo("3");
-                break;
-            }
-            case 4:
-                break;
+        if (IllnessLevel!=4){
+            example.or().andIllnessLevelEqualTo(IllnessLevel+"");
         }
         List<Patient> patients = patientMapper.selectByExample(example);
         List<Patient> result = new LinkedList<>();
         switch (isMatchWard){
             case 0:{//match
-                int len=patients.size();
                 for (Patient temp : patients) {
                     if (temp.getIllnessLevel().equals(temp.getAreaLevel())) {
                         result.add(temp);
@@ -163,8 +132,7 @@ public class DoctorServiceImpl implements DoctorService {
                 }
                 return result;
             }
-            case 1:{//dismatch
-                int len=patients.size();
+            case 1:{//not match
                 for (Patient temp : patients) {
                     if (!temp.getIllnessLevel().equals(temp.getAreaLevel())) {
                         result.add(temp);
@@ -192,10 +160,9 @@ public class DoctorServiceImpl implements DoctorService {
         PatientExample example = new PatientExample();
         //lifestatue = health
         //area = mild
-        example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo(area);
+        example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo("1");
         return patientMapper.selectByExample(example);
     }
-
 
     @Override
     public List<Patient> getNotMatchPatient() {

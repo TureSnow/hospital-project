@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.hospital.dao.NaSheetMapper" >
   <resultMap id="BaseResultMap" type="com.example.hospital.model.NaSheet" >
-    <result column="patient_id" property="patientId" jdbcType="INTEGER" />
-    <result column="date" property="date" jdbcType="DATE" />
+    <id column="patient_id" property="patientId" jdbcType="INTEGER" />
+    <id column="date" property="date" jdbcType="DATE" />
     <result column="NA_result" property="naResult" jdbcType="CHAR" />
     <result column="illness_level" property="illnessLevel" jdbcType="CHAR" />
   </resultMap>
@@ -82,6 +82,18 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from na_sheet
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from na_sheet
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </delete>
   <delete id="deleteByExample" parameterType="com.example.hospital.model.NaSheetExample" >
     delete from na_sheet
     <if test="_parameter != null" >
@@ -160,5 +172,25 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.NaSheet" >
+    update na_sheet
+    <set >
+      <if test="naResult != null" >
+        NA_result = #{naResult,jdbcType=CHAR},
+      </if>
+      <if test="illnessLevel != null" >
+        illness_level = #{illnessLevel,jdbcType=CHAR},
+      </if>
+    </set>
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.NaSheet" >
+    update na_sheet
+    set NA_result = #{naResult,jdbcType=CHAR},
+      illness_level = #{illnessLevel,jdbcType=CHAR}
+    where patient_id = #{patientId,jdbcType=INTEGER}
+      and date = #{date,jdbcType=DATE}
   </update>
 </mapper>

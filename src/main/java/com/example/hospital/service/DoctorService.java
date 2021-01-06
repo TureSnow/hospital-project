@@ -17,10 +17,11 @@ public interface DoctorService {
     void handFree();
 
     /**
-     * @param lifeState  1:health;2:treating;3:dead; 4:all
-     * @param isMatchWard 1:match;2:dismatch;3:all ok
-     * @param IllnessLevel 1:mild; 2:severe; 3:critical; 4:all ok
-     * @return 满足筛选条件的病人
+     * 筛选满足条件的病人
+     * @param lifeState  0:health; 1:treating; 2:dead; 3:all
+     * @param isMatchWard 0:match; 1:not match; 2:all ok
+     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
+     * @return
      */
     List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard);
 
