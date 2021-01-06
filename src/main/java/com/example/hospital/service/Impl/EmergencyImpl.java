@@ -62,7 +62,7 @@ public class EmergencyImpl implements EmergencyNurseService {
      *
      * @param area 0：isolation;1:mild;2；severe;3:critical 4:all
      * @param illnessLevel 0:health;1:mild;2severe;3:critical 4:all
-     * @param lifeState 0:health;1:treating;2:death;3:all
+     * @param lifeState 0:health; 1:treating; 2:death;3:all
      * @return 满足筛选条件的病人
      */
     @Override
@@ -79,7 +79,7 @@ public class EmergencyImpl implements EmergencyNurseService {
             example.or().andIllnessLevelEqualTo(illnessLevel+"");
         }
         if (lifeState!=3){
-            example.or().andAreaLevelEqualTo(lifeState+"");
+            example.or().andLifeStateEqualTo(lifeState+"");
         }
         return patientMapper.selectByExample(example);
     }
