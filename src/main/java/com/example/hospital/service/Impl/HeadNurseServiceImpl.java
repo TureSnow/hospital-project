@@ -1,16 +1,14 @@
 package com.example.hospital.service.Impl;
 
-import com.example.hospital.dao.BedMapper;
-import com.example.hospital.dao.NaSheetMapper;
-import com.example.hospital.dao.PatientMapper;
-import com.example.hospital.dao.UserMapper;
+import com.example.hospital.dao.*;
 import com.example.hospital.model.*;
 import com.example.hospital.service.HeadNurseService;
+import com.example.hospital.utils.NotificationUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
 @Service
 public class HeadNurseServiceImpl implements HeadNurseService {
@@ -19,13 +17,14 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     private PatientMapper patientMapper;
     private BedMapper bedMapper;
     private NaSheetMapper naSheetMapper;
-
-    public HeadNurseServiceImpl(UserServiceImpl userService, UserMapper userMapper, PatientMapper patientMapper, BedMapper bedMapper, NaSheetMapper naSheetMapper){
+    private NotifyMapper notifyMapper;
+    public HeadNurseServiceImpl(UserServiceImpl userService, UserMapper userMapper, PatientMapper patientMapper, BedMapper bedMapper, NaSheetMapper naSheetMapper, NotifyMapper notifyMapper){
         this.userService = userService;
         this.userMapper = userMapper;
         this.patientMapper = patientMapper;
         this.bedMapper = bedMapper;
         this.naSheetMapper = naSheetMapper;
+        this.notifyMapper = notifyMapper;
     }
     /**
      * @return now head nurse area
@@ -35,7 +34,72 @@ public class HeadNurseServiceImpl implements HeadNurseService {
         User user = userService.getUserByName(username);
         return user.getArea();
     }
+    public int getId(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getUserByName(username);
+        return user.getId();
+    }
+    public void handFree(){
+        //查看隔离区是否有病人等待住院
+        PatientExample example1 = new PatientExample();
+        example1.or().andIllnessLevelEqualTo(getArea()).andAreaLevelEqualTo("0");
+        List<Patient> isoPatients = patientMapper.selectByExample(example1);
+        List<Bed> freeBed;
+        int headId = getId();
+        if (!(isoPatients.size() ==0)){
+            //there are some isolation patient
+            //get all free bed
+            freeBed = getFreeBed();
+            int mark = Math.min(isoPatients.size(),freeBed.size());
+            for (int i = 0; i < mark; i++) {
+                Patient isoPatient = isoPatients.get(i);
+                Bed nowBed = freeBed.get(i);
+                isoPatient.setAreaLevel(getArea());
+                nowBed.setPatientId(isoPatient.getId());
+                patientMapper.updateByPrimaryKey(isoPatient);
+                bedMapper.updateByPrimaryKey(nowBed);
+                //每次进入一位病人，添加一条消息
+                Notify notify = NotificationUtil.getPatientInNotify(headId, isoPatient.getName(), new Date());
+                notifyMapper.insert(notify);
+            }
+        }
+        freeBed = getFreeBed();
+        if (freeBed.size()==0){
+            //no free bed
+            return;
+        }
+        //from other area select patients enter this area
+        PatientExample example = new PatientExample();
+        example.or().andIllnessLevelEqualTo(getArea()).andAreaLevelNotEqualTo(getArea()).andAreaLevelNotEqualTo("4");
+        List<Patient> otherPateints = patientMapper.selectByExample(example);
+        if (otherPateints.size()==0){
+            return;
+        }
+        int mark=Math.min(otherPateints.size(),freeBed.size());
+        for (int i = 0; i < mark; i++) {
+            Patient otherPatient = otherPateints.get(i);
+            otherPatient.setAreaLevel(getArea());
+            //find the patient previous bed
+            BedExample example2 = new BedExample();
+            example2.or().andPatientIdEqualTo(otherPatient.getId());
+            Bed prev = bedMapper.selectByExample(example2).get(0);
+            Bed nowBed = getFreeBed().get(i);
+            prev.setPatientId(null);
+            nowBed.setPatientId(otherPatient.getId());
+            patientMapper.updateByPrimaryKey(otherPatient);
+            bedMapper.updateByPrimaryKey(prev);
+            bedMapper.updateByPrimaryKey(nowBed);
+            //每次进入一位病人，添加一条消息
+            Notify notify = NotificationUtil.getPatientInNotify(headId, otherPatient.getName(), new Date());
+            notifyMapper.insert(notify);
+        }
 
+    }
+    public List<Bed> getFreeBed() {
+        BedExample example = new BedExample();
+        example.or().andLevelEqualTo(getArea()).andPatientIdIsNull().andNurseIdIsNotNull();
+        return bedMapper.selectByExample(example);
+    }
     @Override
     public List<Patient> getAllPatient() {
         String area = getArea();
@@ -106,6 +170,7 @@ public class HeadNurseServiceImpl implements HeadNurseService {
                     if (a>=mark)
                         break;
                 }
+                handFree();
             }
             userMapper.updateByPrimaryKey(user);
             return "add ok! now "+user.getName()+" belongs to "+user.getArea();
