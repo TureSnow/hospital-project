@@ -104,7 +104,6 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
-
     /**
      *
      * @return 满足出院条件的病人
