@@ -87,9 +87,16 @@ public class UserServiceImpl implements UserService {
     public List<Patient> getRecoverPatient() {
         PatientExample example=new PatientExample();
         example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo("4");
-        List<Patient> patients = patientMapper.selectByExample(example);
-        return patients;
+        return patientMapper.selectByExample(example);
     }
+
+    @Override
+    public List<Patient> getDeathPatient() {
+        PatientExample example=new PatientExample();
+        example.or().andLifeStateEqualTo("2").andAreaLevelEqualTo("4");
+        return patientMapper.selectByExample(example);
+    }
+
     /**
      * @return now user area
      */

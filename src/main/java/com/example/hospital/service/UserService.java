@@ -13,6 +13,7 @@ public interface UserService {
     List<Notify> getReadNotify();
     int unread2read(int id);
     List<Patient> getRecoverPatient();
+    List<Patient> getDeathPatient();
     /**
      * 筛选满足条件的病人
      * @param lifeState  0:health; 1:treating; 2:dead; 3:all

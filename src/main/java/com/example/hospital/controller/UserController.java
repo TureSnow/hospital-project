@@ -59,4 +59,10 @@ public class UserController {
         List<Patient> recoverPatient = userService.getRecoverPatient();
         return CommonResult.success(recoverPatient);
     }
+    @GetMapping("/deathPatient")
+    @ApiOperation("得到病亡的病人")
+    public CommonResult<List<Patient>> deathPatient(){
+        List<Patient> recoverPatient = userService.getDeathPatient();
+        return CommonResult.success(recoverPatient);
+    }
 }
