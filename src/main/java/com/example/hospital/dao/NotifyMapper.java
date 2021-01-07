@@ -2,7 +2,6 @@ package com.example.hospital.dao;
 
 import com.example.hospital.model.Notify;
 import com.example.hospital.model.NotifyExample;
-import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +10,7 @@ public interface NotifyMapper {
 
     int deleteByExample(NotifyExample example);
 
-    int deleteByPrimaryKey(@Param("userId") Integer userId, @Param("date") Date date);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(Notify record);
 
@@ -19,7 +18,7 @@ public interface NotifyMapper {
 
     List<Notify> selectByExample(NotifyExample example);
 
-    Notify selectByPrimaryKey(@Param("userId") Integer userId, @Param("date") Date date);
+    Notify selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Notify record, @Param("example") NotifyExample example);
 

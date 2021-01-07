@@ -6,7 +6,6 @@ import com.example.hospital.model.Patient;
 import com.example.hospital.service.DoctorService;
 import com.example.hospital.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +47,18 @@ public class UserController {
         if (patients ==null)
             return CommonResult.failed();
         else return CommonResult.success(patients);
+    }
+
+    @PostMapping("/unread2read")
+    @ApiOperation("将notify改为已读状态")
+    public CommonResult<String> unread2read(@RequestBody Map<String,Integer> param){
+        userService.unread2read(param.get("notifyId"));
+        return CommonResult.success("change ok");
+    }
+    @GetMapping("/homePatient")
+    @ApiOperation("得到康复出院的病人")
+    public CommonResult<List<Patient>> homePatient(){
+        List<Patient> recoverPatient = userService.getRecoverPatient();
+        return CommonResult.success(recoverPatient);
     }
 }

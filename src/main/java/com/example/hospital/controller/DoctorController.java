@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user/doctor")
-@PreAuthorize("hasAnyRole('0')")
+//@PreAuthorize("hasAnyRole('0')")
 public class DoctorController {
     private DoctorService doctorService;
 

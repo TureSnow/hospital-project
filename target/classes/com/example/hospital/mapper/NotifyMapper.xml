@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.hospital.dao.NotifyMapper" >
   <resultMap id="BaseResultMap" type="com.example.hospital.model.Notify" >
-    <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <id column="date" property="date" jdbcType="DATE" />
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="is_read" property="isRead" jdbcType="CHAR" />
+    <result column="date" property="date" jdbcType="DATE" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, date, content, is_read
+    id, user_id, content, is_read, date
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.hospital.model.NotifyExample" >
     select
@@ -82,17 +83,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from notify
-    where user_id = #{userId,jdbcType=INTEGER}
-      and date = #{date,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="map" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from notify
-    where user_id = #{userId,jdbcType=INTEGER}
-      and date = #{date,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.example.hospital.model.NotifyExample" >
     delete from notify
@@ -101,19 +100,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Notify" >
-    insert into notify (user_id, date, content, 
-      is_read)
-    values (#{userId,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{content,jdbcType=VARCHAR}, 
-      #{isRead,jdbcType=CHAR})
+    insert into notify (id, user_id, content, 
+      is_read, date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{isRead,jdbcType=CHAR}, #{date,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Notify" >
     insert into notify
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
       <if test="userId != null" >
         user_id,
-      </if>
-      <if test="date != null" >
-        date,
       </if>
       <if test="content != null" >
         content,
@@ -121,19 +120,25 @@
       <if test="isRead != null" >
         is_read,
       </if>
+      <if test="date != null" >
+        date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="date != null" >
-        #{date,jdbcType=DATE},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
       </if>
       <if test="isRead != null" >
         #{isRead,jdbcType=CHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -146,17 +151,20 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update notify
     <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.date != null" >
-        date = #{record.date,jdbcType=DATE},
       </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.isRead != null" >
         is_read = #{record.isRead,jdbcType=CHAR},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -165,10 +173,11 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update notify
-    set user_id = #{record.userId,jdbcType=INTEGER},
-      date = #{record.date,jdbcType=DATE},
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
-      is_read = #{record.isRead,jdbcType=CHAR}
+      is_read = #{record.isRead,jdbcType=CHAR},
+      date = #{record.date,jdbcType=DATE}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -176,21 +185,27 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Notify" >
     update notify
     <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="isRead != null" >
         is_read = #{isRead,jdbcType=CHAR},
       </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=DATE},
+      </if>
     </set>
-    where user_id = #{userId,jdbcType=INTEGER}
-      and date = #{date,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Notify" >
     update notify
-    set content = #{content,jdbcType=VARCHAR},
-      is_read = #{isRead,jdbcType=CHAR}
-    where user_id = #{userId,jdbcType=INTEGER}
-      and date = #{date,jdbcType=DATE}
+    set user_id = #{userId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=CHAR},
+      date = #{date,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

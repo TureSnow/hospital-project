@@ -2,11 +2,9 @@ package com.example.hospital.service.Impl;
 
 
 import com.example.hospital.dao.NotifyMapper;
+import com.example.hospital.dao.PatientMapper;
 import com.example.hospital.dao.UserMapper;
-import com.example.hospital.model.Notify;
-import com.example.hospital.model.NotifyExample;
-import com.example.hospital.model.User;
-import com.example.hospital.model.UserExample;
+import com.example.hospital.model.*;
 import com.example.hospital.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +21,17 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     private NotifyMapper notifyMapper;
+    private PatientMapper patientMapper;
     private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     int getNowUserId(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = getUserByName(username);
         return user.getId();
     }
-    public UserServiceImpl(UserMapper userMapper, NotifyMapper notifyMapper){
+    public UserServiceImpl(UserMapper userMapper, NotifyMapper notifyMapper, PatientMapper patientMapper){
         this.userMapper = userMapper;
         this.notifyMapper = notifyMapper;
+        this.patientMapper = patientMapper;
     }
     public User getUserById(int id){
        return userMapper.selectByPrimaryKey(id);
@@ -75,4 +75,18 @@ public class UserServiceImpl implements UserService {
         return notifies;
     }
 
+    @Override
+    public int unread2read(int id) {
+        Notify notify = notifyMapper.selectByPrimaryKey(id);
+        notify.setIsRead("1");
+        return notifyMapper.updateByPrimaryKey(notify);
+    }
+
+    @Override
+    public List<Patient> getRecoverPatient() {
+        PatientExample example=new PatientExample();
+        example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo("4");
+        List<Patient> patients = patientMapper.selectByExample(example);
+        return patients;
+    }
 }
