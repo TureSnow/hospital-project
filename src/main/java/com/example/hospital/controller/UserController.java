@@ -3,7 +3,6 @@ package com.example.hospital.controller;
 import com.example.hospital.api.CommonResult;
 import com.example.hospital.model.Notify;
 import com.example.hospital.model.Patient;
-import com.example.hospital.service.DoctorService;
 import com.example.hospital.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -18,7 +18,6 @@ import java.util.Map;
 @PreAuthorize("hasAnyRole('3')")
 public class EmergencyController {
     private EmergencyNurseService emergencyNurseService;
-
     public EmergencyController(EmergencyNurseService emergencyNurseService) {
         this.emergencyNurseService = emergencyNurseService;
     }
