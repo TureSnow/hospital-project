@@ -90,13 +90,15 @@ public class EmergencyImpl implements EmergencyNurseService {
                     example.or().andAreaLevelEqualTo(area + "");
                 }
             }
-        }else {
+        } else {
             if (illnessLevel != 4) {
                 if (lifeState != 3) {
                     example.or().andIllnessLevelEqualTo(illnessLevel + "")
-                            .andLifeStateEqualTo(lifeState + "");
+                                .andLifeStateEqualTo(lifeState + "")
+                                .andAreaLevelNotEqualTo("4");
                 } else {
-                    example.or().andIllnessLevelEqualTo(illnessLevel + "");
+                    example.or().andIllnessLevelEqualTo(illnessLevel + "")
+                                .andAreaLevelNotEqualTo("4");
                 }
             } else {
                 if (lifeState != 3) {
