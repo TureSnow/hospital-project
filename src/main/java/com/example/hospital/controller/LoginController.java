@@ -30,7 +30,7 @@ public class LoginController {
     }
     @ApiOperation(value = "register, return userId")
     @PostMapping(value = "/register")
-    public CommonResult<User> register(User user)  {
+    public CommonResult<User> register(@RequestBody User user)  {
         try{
             User user1 = loginService.register(user);
             return CommonResult.success(user1);

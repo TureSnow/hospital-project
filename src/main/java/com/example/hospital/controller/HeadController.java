@@ -33,7 +33,7 @@ public class HeadController {
         return CommonResult.failed("no patient now in this area!");
     }
 
-    @PostMapping("/filter")
+    /*@PostMapping("/filter")
     @ApiOperation("筛选本治疗区域的所有病人")
     public CommonResult<List<Patient>> filter(@RequestBody Map<String,Integer>param){
         List<Patient> Patient = headNurseService.getPatient(param.get("lifeState"),param.get("illnessLevel"),param.get("isMatch"));
@@ -41,7 +41,7 @@ public class HeadController {
             return CommonResult.success(Patient);
         }
         return CommonResult.failed("no patient in your condition!");
-    }
+    }*/
     @PostMapping("/getPatientByWard")
     @ApiOperation("查看单个护士照顾的病人")
     public CommonResult<List<Patient>> getPatientByWard(@RequestBody Map<String,Integer> param){
@@ -51,10 +51,11 @@ public class HeadController {
         }
         return CommonResult.success(wardNurse2Patient);
     }
+
     @PostMapping("/addNurse")
     @ApiOperation("将已有的user添加为本区域的病人")
-    public CommonResult<String> addWardNurse(@RequestBody Map<String,Integer> param){
-        String msg = headNurseService.addWardNurse(param.get("wardNurseId"));
+    public CommonResult<String> addWardNurse(@RequestBody Map<String,String> param){
+        String msg = headNurseService.addWardNurse(param.get("wardNurseName"));
         return CommonResult.success(msg);
     }
     @PostMapping("/deleteNurse")

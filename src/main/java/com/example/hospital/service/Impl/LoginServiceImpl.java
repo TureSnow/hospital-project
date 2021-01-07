@@ -64,6 +64,7 @@ public class LoginServiceImpl implements LoginService{
         if (userDetails != null){
             throw new RegisterException("name duplication!");
         }
+        System.out.println("姓名"+user.getName());
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         int id = userService.createNewUser(user);

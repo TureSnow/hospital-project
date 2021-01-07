@@ -15,7 +15,7 @@ import java.util.List;
 public class EmergencyImpl implements EmergencyNurseService {
     private PatientMapper patientMapper;
     private BedMapper bedMapper;
-    public EmergencyImpl(UserServiceImpl userService, PatientMapper patientMapper, BedMapper bedMapper){
+    public EmergencyImpl(PatientMapper patientMapper, BedMapper bedMapper){
         this.patientMapper = patientMapper;
         this.bedMapper = bedMapper;
     }
@@ -62,25 +62,51 @@ public class EmergencyImpl implements EmergencyNurseService {
      *
      * @param area 0：isolation;1:mild;2；severe;3:critical 4:all
      * @param illnessLevel 0:health;1:mild;2severe;3:critical 4:all
-     * @param lifeState 0:health;1:treating;2:death;3:all
+     * @param lifeState 0:health; 1:treating; 2:death;3:all
      * @return 满足筛选条件的病人
      */
     @Override
-    public List<Patient> getPateint(int area, int illnessLevel, int lifeState) {
+    public List<Patient> getPatient(int area, int illnessLevel, int lifeState) {
         if (!(StringCheckUtil.checkString(area+"","01234")&&StringCheckUtil.checkString(illnessLevel+"","01234")
                 &&StringCheckUtil.checkString(lifeState+"","0123"))){
             return null;
         }
         PatientExample example = new PatientExample();
-        if (area!=4){
-            example.or().andAreaLevelEqualTo(area+"");
+        if (area!=4) {
+            if (illnessLevel != 4) {
+                if (lifeState != 3) {
+                    example.or().andAreaLevelEqualTo(area + "")
+                            .andIllnessLevelEqualTo(illnessLevel + "")
+                            .andLifeStateEqualTo(lifeState + "");
+                } else {
+                    example.or().andAreaLevelEqualTo(area + "")
+                            .andIllnessLevelEqualTo(illnessLevel + "");
+                }
+            } else {
+                if (lifeState != 3) {
+                    example.or().andAreaLevelEqualTo(area + "")
+                            .andLifeStateEqualTo(lifeState + "");
+                } else {
+                    example.or().andAreaLevelEqualTo(area + "");
+                }
+            }
+        }else {
+            if (illnessLevel != 4) {
+                if (lifeState != 3) {
+                    example.or().andIllnessLevelEqualTo(illnessLevel + "")
+                            .andLifeStateEqualTo(lifeState + "");
+                } else {
+                    example.or().andIllnessLevelEqualTo(illnessLevel + "");
+                }
+            } else {
+                if (lifeState != 3) {
+                    example.or().andLifeStateEqualTo(lifeState + "");
+                } else {
+                    example.or();
+                }
+            }
         }
-        if (illnessLevel!=4){
-            example.or().andIllnessLevelEqualTo(illnessLevel+"");
-        }
-        if (lifeState!=3){
-            example.or().andAreaLevelEqualTo(lifeState+"");
-        }
+
         return patientMapper.selectByExample(example);
     }
 }

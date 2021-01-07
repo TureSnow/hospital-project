@@ -39,10 +39,10 @@ public class EmergencyController {
     @PostMapping("/filter")
     @ApiOperation("筛选得到病人")
     public CommonResult<List<Patient>> getPatient(@RequestBody Map<String,Integer> param){
-        List<Patient> pateints = emergencyNurseService.getPateint(param.get("area"), param.get("illnessLevel"), param.get("lifeState"));
-        if (pateints==null||pateints.size()==0){
-            return CommonResult.failed("no that patient");
-        }
+        List<Patient> pateints = emergencyNurseService.getPatient(
+                param.get("area"),
+                param.get("illnessLevel"),
+                param.get("lifeState"));
         return CommonResult.success(pateints);
     }
 }

@@ -56,6 +56,25 @@ body参数：
 
 ​			/user/unreadNotify(未读消息)
 
+**将notify改为已读**
+
+方式：POST
+
+路径：/user/unread2read
+
+```json
+//参数样本：
+{
+	"notifyId":1
+}
+```
+
+**得到所有康复出院的病人**
+
+方式：GET
+
+路径：/user/homePatient
+
 #### 医生：
 
 **修改病人病情评级**
@@ -109,9 +128,10 @@ return:
 
 格式：JSON
 
-参数实例：
+
 
 ```json
+//参数实例：
 {
     "patientId":"16",
     "level":"2"//0:health(可出院);1:treating(治疗中);2:death
@@ -190,7 +210,42 @@ return:
 ```json
 //返回实例
 {
-	"patientId":"16"
+    "code": 200,
+    "message": "操作成功",
+    "data": [
+        {
+            "id": 1,
+            "nurseId": 8,
+            "patientId": null,
+            "level": "1",
+            "bedId": 1,
+            "wardId": 201
+        },
+        {
+            "id": 2,
+            "nurseId": 8,
+            "patientId": 17,
+            "level": "1",
+            "bedId": 2,
+            "wardId": 201
+        },
+        {
+            "id": 3,
+            "nurseId": 8,
+            "patientId": 18,
+            "level": "1",
+            "bedId": 3,
+            "wardId": 201
+        },
+        {
+            "id": 4,
+            "nurseId": 14,
+            "patientId": 19,
+            "level": "1",
+            "bedId": 4,
+            "wardId": 201
+        }
+    ]
 }
 ```
 
@@ -248,7 +303,24 @@ return:
 ```json
 //返回实例：
 {
-	"patientId":"16"
+    "code": 200,
+    "message": "操作成功",
+    "data": [
+        {
+            "id": 17,
+            "name": "ptt2",
+            "lifeState": "1",
+            "areaLevel": "1",
+            "illnessLevel": "1"
+        },
+        {
+            "id": 18,
+            "name": "ptt3",
+            "lifeState": "1",
+            "areaLevel": "1",
+            "illnessLevel": "1"
+        }
+    ]
 }
 ```
 
@@ -314,7 +386,24 @@ return:
 ```json
 //返回实例
 {
-	"patientId":"16"
+    "code": 200,
+    "message": "操作成功",
+    "data": [
+        {
+            "id": 17,
+            "name": "ptt2",
+            "lifeState": "1",
+            "areaLevel": "1",
+            "illnessLevel": "1"
+        },
+        {
+            "id": 18,
+            "name": "ptt3",
+            "lifeState": "1",
+            "areaLevel": "1",
+            "illnessLevel": "1"
+        }
+    ]
 }
 ```
 

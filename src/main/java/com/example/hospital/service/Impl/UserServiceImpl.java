@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -58,12 +59,12 @@ public class UserServiceImpl implements UserService {
         notifyExample.or().andUserIdEqualTo(id).andIsReadEqualTo("0");
         List<Notify> notifies = notifyMapper.selectByExample(notifyExample);
         //change the unread -> read
-        if (notifies.size()>0){
-            for (Notify notify:notifies){
-                notify.setIsRead("1");
-                notifyMapper.updateByPrimaryKey(notify);
-            }
-        }
+//        if (notifies.size()>0){
+//            for (Notify notify:notifies){
+//                notify.setIsRead("1");
+//                notifyMapper.updateByPrimaryKey(notify);
+//            }
+//        }
         return notifies;
     }
     @Override
@@ -88,5 +89,67 @@ public class UserServiceImpl implements UserService {
         example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo("4");
         List<Patient> patients = patientMapper.selectByExample(example);
         return patients;
+    }
+    /**
+     * @return now user area
+     */
+    public String getArea(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = getUserByName(username);
+        return user.getArea();
+    }
+    /**
+     * 筛选满足条件的病人
+     * @param lifeState  0:health; 1:treating; 2:dead; 3:all
+     * @param isMatchWard 0:match; 1:not match; 2:all ok
+     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
+     * @return
+     */
+    @Override
+    public List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard){
+        String area = getArea();
+        PatientExample example = new PatientExample();
+        if (lifeState!=3){
+            if (IllnessLevel!=4){
+                example.or().andAreaLevelEqualTo(area)
+                        .andIllnessLevelEqualTo(IllnessLevel+"")
+                        .andLifeStateEqualTo(lifeState+"");
+            }else {
+                example.or().andAreaLevelEqualTo(area)
+                        .andIllnessLevelEqualTo(IllnessLevel+"");
+            }
+        }else {
+            if (IllnessLevel!=4){
+                example.or().andAreaLevelEqualTo(area)
+                        .andIllnessLevelEqualTo(IllnessLevel+"");
+            }else {
+                example.or().andAreaLevelEqualTo(area);
+            }
+        }
+
+        List<Patient> patients = patientMapper.selectByExample(example);
+        List<Patient> result = new LinkedList<>();
+        switch (isMatchWard){
+            case 0:{//match
+                for (Patient temp : patients) {
+                    if (temp.getIllnessLevel().equals(temp.getAreaLevel())) {
+                        result.add(temp);
+                    }
+                }
+                return result;
+            }
+            case 1:{//not match
+                for (Patient temp : patients) {
+                    if (!temp.getIllnessLevel().equals(temp.getAreaLevel())) {
+                        result.add(temp);
+                    }
+                }
+                return result;
+            }
+            case 2:
+                return patients;
+
+        }
+        return null;
     }
 }
