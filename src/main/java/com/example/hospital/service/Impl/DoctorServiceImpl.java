@@ -241,6 +241,7 @@ public class DoctorServiceImpl implements DoctorService {
             Bed prev =beds.get(0);
             prev.setPatientId(null);
             bedMapper.updateByPrimaryKey(prev);
+            patient.setAreaLevel("4");
         }
         patientMapper.updateByPrimaryKey(patient);
         return "patient life state change successful!";
