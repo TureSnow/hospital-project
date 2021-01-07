@@ -87,9 +87,16 @@ public class UserServiceImpl implements UserService {
     public List<Patient> getRecoverPatient() {
         PatientExample example=new PatientExample();
         example.or().andLifeStateEqualTo("0").andAreaLevelEqualTo("4");
-        List<Patient> patients = patientMapper.selectByExample(example);
-        return patients;
+        return patientMapper.selectByExample(example);
     }
+
+    @Override
+    public List<Patient> getDeathPatient() {
+        PatientExample example=new PatientExample();
+        example.or().andLifeStateEqualTo("2").andAreaLevelEqualTo("4");
+        return patientMapper.selectByExample(example);
+    }
+
     /**
      * @return now user area
      */
@@ -102,7 +109,7 @@ public class UserServiceImpl implements UserService {
      * 筛选满足条件的病人
      * @param lifeState  0:health; 1:treating; 2:dead; 3:all
      * @param isMatchWard 0:match; 1:not match; 2:all ok
-     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
+     * @param IllnessLevel 1:mild; 2:severe; 3:critical; 4:all ok
      * @return
      */
     @Override
@@ -112,11 +119,11 @@ public class UserServiceImpl implements UserService {
         if (lifeState!=3){
             if (IllnessLevel!=4){
                 example.or().andAreaLevelEqualTo(area)
-                        .andIllnessLevelEqualTo(IllnessLevel+"")
-                        .andLifeStateEqualTo(lifeState+"");
+                        .andLifeStateEqualTo(lifeState+"")
+                        .andIllnessLevelEqualTo(IllnessLevel+"");
             }else {
                 example.or().andAreaLevelEqualTo(area)
-                        .andIllnessLevelEqualTo(IllnessLevel+"");
+                        .andLifeStateEqualTo(lifeState+"");
             }
         }else {
             if (IllnessLevel!=4){

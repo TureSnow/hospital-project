@@ -233,6 +233,16 @@ public class DoctorServiceImpl implements DoctorService {
             return "It's not a patient in that area!";
         }
         patient.setLifeState(level);
+        if (level.equals("2")){
+            //病人死亡清空资源
+            BedExample example = new BedExample();
+            example.or().andPatientIdEqualTo(patientId);
+            List<Bed> beds = bedMapper.selectByExample(example);
+            Bed prev =beds.get(0);
+            prev.setPatientId(null);
+            bedMapper.updateByPrimaryKey(prev);
+            patient.setAreaLevel("4");
+        }
         patientMapper.updateByPrimaryKey(patient);
         return "patient life state change successful!";
     }
@@ -275,7 +285,7 @@ public class DoctorServiceImpl implements DoctorService {
         if (!area.equals("1"))
             return "Only the mild treatment area doctor can discharge patient";
         Patient patient=patientMapper.selectByPrimaryKey(patientId);
-        if (!patient.getIllnessLevel().equals("0"))
+        if (!patient.getLifeState().equals("0"))
             return "the patient is unhealth! discharge fail!";
         //4:home
         patient.setAreaLevel("4");

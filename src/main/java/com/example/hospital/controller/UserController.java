@@ -3,7 +3,6 @@ package com.example.hospital.controller;
 import com.example.hospital.api.CommonResult;
 import com.example.hospital.model.Notify;
 import com.example.hospital.model.Patient;
-import com.example.hospital.service.DoctorService;
 import com.example.hospital.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,6 +57,12 @@ public class UserController {
     @ApiOperation("得到康复出院的病人")
     public CommonResult<List<Patient>> homePatient(){
         List<Patient> recoverPatient = userService.getRecoverPatient();
+        return CommonResult.success(recoverPatient);
+    }
+    @GetMapping("/deathPatient")
+    @ApiOperation("得到病亡的病人")
+    public CommonResult<List<Patient>> deathPatient(){
+        List<Patient> recoverPatient = userService.getDeathPatient();
         return CommonResult.success(recoverPatient);
     }
 }
