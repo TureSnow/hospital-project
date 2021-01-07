@@ -103,49 +103,7 @@ public class DoctorServiceImpl implements DoctorService {
         return patientMapper.selectByExample(example);
     }
 
-    /**
-     * 筛选满足条件的病人
-     * @param lifeState  0:health; 1:treating; 2:dead; 3:all
-     * @param isMatchWard 0:match; 1:not match; 2:all ok
-     * @param IllnessLevel 0:health; 1:mild; 2:severe; 3:critical; 4:all ok
-     * @return
-     */
-    @Override
-    public List<Patient> getPatient(int lifeState, int IllnessLevel,int isMatchWard){
-        String area = getArea();
-        PatientExample example = new PatientExample();
-        example.or().andAreaLevelEqualTo(area);
-        if (lifeState!=3){
-            example.or().andLifeStateEqualTo(lifeState+"");
-        }
-        if (IllnessLevel!=4){
-            example.or().andIllnessLevelEqualTo(IllnessLevel+"");
-        }
-        List<Patient> patients = patientMapper.selectByExample(example);
-        List<Patient> result = new LinkedList<>();
-        switch (isMatchWard){
-            case 0:{//match
-                for (Patient temp : patients) {
-                    if (temp.getIllnessLevel().equals(temp.getAreaLevel())) {
-                        result.add(temp);
-                    }
-                }
-                return result;
-            }
-            case 1:{//not match
-                for (Patient temp : patients) {
-                    if (!temp.getIllnessLevel().equals(temp.getAreaLevel())) {
-                        result.add(temp);
-                    }
-                }
-                return result;
-            }
-            case 2:
-                return patients;
 
-        }
-        return null;
-    }
 
     /**
      *

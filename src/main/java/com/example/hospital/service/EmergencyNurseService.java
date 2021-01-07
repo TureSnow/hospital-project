@@ -13,5 +13,5 @@ public interface EmergencyNurseService {
      */
     String addPatient(String name,String illnessLevel);
     List<Patient> getAllPatient();
-    List<Patient> getPateint(int area,int illnessLevel,int lifeState);
+    List<Patient> getPatient(int area, int illnessLevel, int lifeState);
 }

@@ -16,7 +16,6 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
-    private DoctorService doctorService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -41,9 +40,9 @@ public class UserController {
     }
     @PreAuthorize("hasAnyRole('0','1')")
     @PostMapping("/filter")
-    @ApiOperation("根据筛选得到符合筛选条件的病人")
+    @ApiOperation("根据筛选得到符合筛选条件的病人,医生，护士长共用接口")
     public CommonResult<List<Patient>> getPatient(@RequestBody Map<String,Integer> param){
-        List<Patient> patients = doctorService.getPatient(param.get("lifeState"), param.get("illnessLevel"), param.get("isMatch"));
+        List<Patient> patients = userService.getPatient(param.get("lifeState"), param.get("illnessLevel"), param.get("isMatch"));
         if (patients ==null)
             return CommonResult.failed();
         else return CommonResult.success(patients);

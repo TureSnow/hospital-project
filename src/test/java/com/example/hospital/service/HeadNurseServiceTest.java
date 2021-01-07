@@ -39,7 +39,7 @@ class HeadNurseServiceTest {
                 System.out.println("login null");
                 return;
             }
-//            loginService.login("hnurse1","hnurse");
+            loginService.login("hnurse1","hnurse");
 //            headNurseService.addWardNurse(8);
 //            headNurseService.addWardNurse(14);
 //            headNurseService.addWardNurse(19);

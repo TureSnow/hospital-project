@@ -45,72 +45,6 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     }
 
     @Override
-    public List<Patient> getPatient(int lifeState, int IllnessLevel, int isMatchWard) {
-        PatientExample example = new PatientExample();
-        example.or().andAreaLevelEqualTo(getArea());
-        switch (lifeState) {
-            case 0:{
-                example.or().andLifeStateEqualTo("0");
-                break;
-            }
-            case 1:{
-                example.or().andLifeStateEqualTo("1");
-                break;
-            }
-            case 2:{
-                example.or().andLifeStateEqualTo("2");
-                break;
-            }
-            case 3:{
-                //do nothing
-                break;
-            }
-        }
-        switch (IllnessLevel) {
-            case 1:{
-                example.or().andIllnessLevelEqualTo("1");
-                break;
-            }
-            case 2:{
-                example.or().andIllnessLevelEqualTo("2");
-                break;
-            }
-            case 3:{
-                example.or().andIllnessLevelEqualTo("3");
-                break;
-            }
-            case 4:
-                break;
-        }
-        List<Patient> patients = patientMapper.selectByExample(example);
-        List<Patient> result = new LinkedList<>();
-        switch (isMatchWard){
-            case 0:{//match
-                int len=patients.size();
-                for (Patient temp : patients) {
-                    if (temp.getIllnessLevel().equals(temp.getAreaLevel())) {
-                        result.add(temp);
-                    }
-                }
-                return result;
-            }
-            case 1:{//dismatch
-                int len=patients.size();
-                for (Patient temp : patients) {
-                    if (!temp.getIllnessLevel().equals(temp.getAreaLevel())) {
-                        result.add(temp);
-                    }
-                }
-                return result;
-            }
-            case 2:
-                return patients;
-
-        }
-        return null;
-    }
-
-    @Override
     public List<Patient> getNotMatchPatient() {
         List<Patient> patients = getAllPatient();
         List<Patient> result = new ArrayList<>();
@@ -180,8 +114,8 @@ public class HeadNurseServiceImpl implements HeadNurseService {
     }
 
     @Override
-    public String deleteWardNurse(String wardNurseName) {
-        User user = userService.getUserByName(wardNurseName);
+    public String deleteWardNurse(int wardNurseId) {
+        User user = userService.getUserById(wardNurseId);
         if (user==null){
             return "no that user";
         }

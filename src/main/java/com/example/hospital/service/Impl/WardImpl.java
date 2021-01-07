@@ -111,17 +111,21 @@ public class WardImpl implements WardNurseService {
             }
             return result;
         }else {
+            //不能出院
             if (illnessLevel==4){
                 for (Bed bed:beds){
                     int patientId = bed.getPatientId();
-                    result.add(patientMapper.selectByPrimaryKey(patientId));
+                    Patient patient = patientMapper.selectByPrimaryKey(patientId);
+                    if (!patient.getLifeState().equals("0")){
+                        result.add(patient);
+                    }
                 }
                 return result;
             }else {
                 for (Bed bed:beds){
                     int patientId = bed.getPatientId();
                     Patient patient = patientMapper.selectByPrimaryKey(patientId);
-                    if (Integer.parseInt(patient.getIllnessLevel())==illnessLevel){
+                    if (Integer.parseInt(patient.getIllnessLevel())==illnessLevel&&(!patient.getLifeState().equals("0"))){
                         result.add(patient);
                     }
                 }
