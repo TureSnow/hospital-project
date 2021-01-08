@@ -33,7 +33,7 @@ public class WardController {
         DateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         Date date = simpleDateFormat.parse(param.get("date").toString());
         int patientId = (Integer)param.get("patientId");
-        float temperature = (Float) param.get("temperature");
+        float temperature =  ((Double) param.get("temperature")).floatValue();
         int lifeState = (Integer) param.get("lifeState");
         int na_result = (Integer) param.get("na_result");
         String symptom = (String) param.get("symptom");

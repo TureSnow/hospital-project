@@ -7,7 +7,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url:  jdbc:mysql://127.0.0.1:3306/hospital?serverTimezone=GMT
     username: root
-    password: TF22661.me
+    password: 12306
+    # TF22661.me
     # consistent
 mybatis:
   mapper-locations: classpath*:com/example/hospital/mapper/*.xml

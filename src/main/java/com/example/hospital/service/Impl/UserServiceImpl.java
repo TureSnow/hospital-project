@@ -59,12 +59,12 @@ public class UserServiceImpl implements UserService {
         notifyExample.or().andUserIdEqualTo(id).andIsReadEqualTo("0");
         List<Notify> notifies = notifyMapper.selectByExample(notifyExample);
         //change the unread -> read
-        if (notifies.size()>0){
-            for (Notify notify:notifies){
-                notify.setIsRead("1");
-                notifyMapper.updateByPrimaryKey(notify);
-            }
-        }
+//        if (notifies.size()>0){
+//            for (Notify notify:notifies){
+//                notify.setIsRead("1");
+//                notifyMapper.updateByPrimaryKey(notify);
+//            }
+//        }
         return notifies;
     }
     @Override
