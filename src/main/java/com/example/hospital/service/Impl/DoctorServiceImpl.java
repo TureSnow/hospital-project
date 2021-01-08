@@ -39,9 +39,9 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     public void handFree(){
-        //查看隔离区是否有病人等待住院
+        String area=getArea();
         PatientExample example1 = new PatientExample();
-        example1.or().andIllnessLevelEqualTo(getArea()).andAreaLevelEqualTo("0");
+        example1.or().andIllnessLevelEqualTo(area).andAreaLevelEqualTo("0");
         List<Patient> isoPatients = patientMapper.selectByExample(example1);
         if (!(isoPatients.size() ==0)){
             //there are some isolation patient
@@ -51,7 +51,7 @@ public class DoctorServiceImpl implements DoctorService {
             for (int i = 0; i < mark; i++) {
                 Patient isoPatient = isoPatients.get(i);
                 Bed nowBed = freeBed.get(i);
-                isoPatient.setAreaLevel(getArea());
+                isoPatient.setAreaLevel(area);
                 nowBed.setPatientId(isoPatient.getId());
                 patientMapper.updateByPrimaryKey(isoPatient);
                 bedMapper.updateByPrimaryKey(nowBed);
@@ -68,7 +68,11 @@ public class DoctorServiceImpl implements DoctorService {
         }
         //from other area select a patient enter this area
         PatientExample example = new PatientExample();
-        example.or().andIllnessLevelEqualTo(getArea()).andAreaLevelNotEqualTo(getArea());
+        example.or().andIllnessLevelEqualTo(area)
+                    .andLifeStateEqualTo("1")
+                    .andAreaLevelNotEqualTo(area)
+                    .andAreaLevelNotEqualTo("4")
+                    .andAreaLevelNotEqualTo("0");
         List<Patient> otherPateints = patientMapper.selectByExample(example);
         if (otherPateints.size()==0){
             return;
@@ -76,7 +80,7 @@ public class DoctorServiceImpl implements DoctorService {
         int mark=Math.min(otherPateints.size(),freeBed.size());
         for (int i = 0; i < mark; i++) {
             Patient otherPatient = otherPateints.get(i);
-            otherPatient.setAreaLevel(getArea());
+            otherPatient.setAreaLevel(area);
             //find the patient previous bed
             BedExample example2 = new BedExample();
             example2.or().andPatientIdEqualTo(otherPatient.getId());

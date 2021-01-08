@@ -40,37 +40,40 @@ public class HeadNurseServiceImpl implements HeadNurseService {
         return user.getId();
     }
     public void handFree(){
-        //查看隔离区是否有病人等待住院
+        String area=getArea();
         PatientExample example1 = new PatientExample();
-        example1.or().andIllnessLevelEqualTo(getArea()).andAreaLevelEqualTo("0");
+        example1.or().andIllnessLevelEqualTo(area).andAreaLevelEqualTo("0");
         List<Patient> isoPatients = patientMapper.selectByExample(example1);
-        List<Bed> freeBed;
-        int headId = getId();
         if (!(isoPatients.size() ==0)){
             //there are some isolation patient
             //get all free bed
-            freeBed = getFreeBed();
+            List<Bed> freeBed = getFreeBed();
             int mark = Math.min(isoPatients.size(),freeBed.size());
             for (int i = 0; i < mark; i++) {
                 Patient isoPatient = isoPatients.get(i);
                 Bed nowBed = freeBed.get(i);
-                isoPatient.setAreaLevel(getArea());
+                isoPatient.setAreaLevel(area);
                 nowBed.setPatientId(isoPatient.getId());
                 patientMapper.updateByPrimaryKey(isoPatient);
                 bedMapper.updateByPrimaryKey(nowBed);
                 //每次进入一位病人，添加一条消息
+                int headId = getId();
                 Notify notify = NotificationUtil.getPatientInNotify(headId, isoPatient.getName(), new Date());
                 notifyMapper.insert(notify);
             }
         }
-        freeBed = getFreeBed();
+        List<Bed> freeBed = getFreeBed();
         if (freeBed.size()==0){
             //no free bed
             return;
         }
-        //from other area select patients enter this area
+        //from other area select a patient enter this area
         PatientExample example = new PatientExample();
-        example.or().andIllnessLevelEqualTo(getArea()).andAreaLevelNotEqualTo(getArea()).andAreaLevelNotEqualTo("4");
+        example.or().andIllnessLevelEqualTo(area)
+                .andLifeStateEqualTo("1")
+                .andAreaLevelNotEqualTo(area)
+                .andAreaLevelNotEqualTo("4")
+                .andAreaLevelNotEqualTo("0");
         List<Patient> otherPateints = patientMapper.selectByExample(example);
         if (otherPateints.size()==0){
             return;
@@ -78,7 +81,7 @@ public class HeadNurseServiceImpl implements HeadNurseService {
         int mark=Math.min(otherPateints.size(),freeBed.size());
         for (int i = 0; i < mark; i++) {
             Patient otherPatient = otherPateints.get(i);
-            otherPatient.setAreaLevel(getArea());
+            otherPatient.setAreaLevel(area);
             //find the patient previous bed
             BedExample example2 = new BedExample();
             example2.or().andPatientIdEqualTo(otherPatient.getId());
@@ -90,6 +93,7 @@ public class HeadNurseServiceImpl implements HeadNurseService {
             bedMapper.updateByPrimaryKey(prev);
             bedMapper.updateByPrimaryKey(nowBed);
             //每次进入一位病人，添加一条消息
+            int headId = getId();
             Notify notify = NotificationUtil.getPatientInNotify(headId, otherPatient.getName(), new Date());
             notifyMapper.insert(notify);
         }
